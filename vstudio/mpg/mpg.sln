@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mpg", "mpg.vcproj", "{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DLL Unicode Debug|Win32 = DLL Unicode Debug|Win32
+		DLL Unicode Release|Win32 = DLL Unicode Release|Win32
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Release|Win32 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.DLL Unicode Debug|Win32.ActiveCfg = DLL Unicode Debug|Win32
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.DLL Unicode Debug|Win32.Build.0 = DLL Unicode Debug|Win32
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.DLL Unicode Release|Win32.ActiveCfg = DLL Unicode Release|Win32
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.DLL Unicode Release|Win32.Build.0 = DLL Unicode Release|Win32
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{B4FCCE27-8922-4DFB-B071-E47BD5C35DAD}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

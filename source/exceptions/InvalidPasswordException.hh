@@ -1,6 +1,6 @@
 /*
  * Metroid Password Generator
- * Copyright (C) 2005 emuWorks
+ * Copyright (C) 2005,2007-2008 emuWorks
  * http://games.technoplaza.net/
  *
  * This file is part of Metroid Password Generator.
@@ -20,10 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: InvalidPasswordException.hh,v 1.6 2005/09/27 09:32:14 technoplaza Exp $
+// $Id: InvalidPasswordException.hh,v 1.7 2008/12/17 00:23:12 jdratlif Exp $
 
-#ifndef _INVALIDPASSWORDEXCEPTION_HH_
-#define _INVALIDPASSWORDEXCEPTION_HH_
+#ifndef MPG_INVALIDPASSWORDEXCEPTION_HH_
+#define MPG_INVALIDPASSWORDEXCEPTION_HH_
 
 #include <stdexcept>
 #include <string>

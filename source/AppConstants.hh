@@ -1,6 +1,6 @@
 /*
  * Metroid Password Generator
- * Copyright (C) 2005 emuWorks
+ * Copyright (C) 2005,2007-2008 emuWorks
  * http://games.technoplaza.net/
  *
  * This file is part of Metroid Password Generator.
@@ -20,14 +20,14 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: AppConstants.hh,v 1.2 2005/09/27 08:05:00 technoplaza Exp $
+// $Id: AppConstants.hh,v 1.3 2008/12/17 00:23:12 jdratlif Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
 #endif
 
-#ifndef _APPCONSTANTS_HH_
-#define _APPCONSTANTS_HH_
+#ifndef MPG_APPCONSTANTS_HH_
+#define MPG_APPCONSTANTS_HH_
 
 namespace mpg {
     /// The application name

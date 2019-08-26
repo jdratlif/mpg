@@ -1,6 +1,6 @@
 /*
  * Metroid Password Generator
- * Copyright (C) 2005 emuWorks
+ * Copyright (C) 2005,2007-2008 emuWorks
  * http://games.technoplaza.net/
  *
  * This file is part of Metroid Password Generator.
@@ -20,10 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: PasswordTextCtrl.hh,v 1.3 2005/09/30 10:01:46 technoplaza Exp $
+// $Id: PasswordTextCtrl.hh,v 1.4 2008/12/17 00:23:12 jdratlif Exp $
 
-#ifndef _PASSWORDTEXTCTRL_HH_
-#define _PASSWORDTEXTCTRL_HH_
+#ifndef MPG_PASSWORDTEXTCTRL_HH_
+#define MPG_PASSWORDTEXTCTRL_HH_
 
 namespace mpg {
     /// Custom text control used to enter Metroid passwords

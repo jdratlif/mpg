@@ -1,6 +1,6 @@
 /*
  * Metroid Password Generator
- * Copyright (C) 2005 emuWorks
+ * Copyright (C) 2005,2007-2008 emuWorks
  * http://games.technoplaza.net/
  *
  * This file is part of Metroid Password Generator.
@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGApp.cc,v 1.6 2007/02/20 19:27:17 technoplaza Exp $
+// $Id: MPGApp.cc,v 1.7 2008/12/17 00:23:12 jdratlif Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -41,8 +41,8 @@
 using namespace mpg;
 
 const wxString mpg::APP_NAME(wxT("Metroid Password Generator"));
-const wxString mpg::APP_VERSION(wxT("1.0"));
-const wxString mpg::APP_COPYRIGHT(wxT("Copyright (C) 2005 emuWorks"));
+const wxString mpg::APP_VERSION(wxT("1.0a"));
+const wxString mpg::APP_COPYRIGHT(wxT("Copyright (C) 2005,2007-2008 emuWorks"));
 const wxString mpg::APP_URL(wxT("http://games.technoplaza.net/"));
 
 // prototype for InitXmlResource function

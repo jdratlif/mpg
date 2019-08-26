@@ -1,6 +1,6 @@
 /*
  * Metroid Password Generator
- * Copyright (C) 2005 emuWorks
+ * Copyright (C) 2005,2007-2008 emuWorks
  * http://games.technoplaza.net/
  *
  * This file is part of Metroid Password Generator.
@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.cc,v 1.46 2007/02/20 19:27:17 technoplaza Exp $
+// $Id: MPGFrame.cc,v 1.48 2008/12/17 01:04:21 jdratlif Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -395,8 +395,8 @@ void MPGFrame::updateTextCtrlSizes() {
 void MPGFrame::warnOnDebugPassword(const wxString &password) {
     // warn if they have entered the debug password
     if (password.StartsWith(wxT("NARPASSWORD00000"))) {
-        wxMessageBox(wxT("This password triggers Metroid's debug mode.\n"
-                         "Because it is hard coded, it cannot be edited."),
+        wxMessageBox(wxT("This password triggers Metroid's debug mode.\n")
+                     wxT("Because it is hard coded, it cannot be edited."),
                      wxT("Debug Password"), wxICON_EXCLAMATION | wxOK);
     }
 }
@@ -768,8 +768,8 @@ void MPGFrame::onPasswordChanged(wxCommandEvent &event) {
 }
 
 void MPGFrame::onPasswordDebugPassword(wxCommandEvent &) {  
-    wxMessageBox(wxT("The debug password is NARPAS SWORD0 000000 000000\n"
-                     "It is hard coded and cannot be edited."),
+    wxMessageBox(wxT("The debug password is NARPAS SWORD0 000000 000000\n")
+                 wxT("It is hard coded and cannot be edited."),
                  wxT("Debug Password"), wxICON_INFORMATION | wxOK);
 }
 

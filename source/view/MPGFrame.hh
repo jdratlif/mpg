@@ -1,6 +1,6 @@
 /*
  * Metroid Password Generator
- * Copyright (C) 2005 emuWorks
+ * Copyright (C) 2005,2007-2008 emuWorks
  * http://games.technoplaza.net/
  *
  * This file is part of Metroid Password Generator.
@@ -20,10 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.hh,v 1.35 2005/10/04 02:32:56 technoplaza Exp $
+// $Id: MPGFrame.hh,v 1.36 2008/12/17 00:23:12 jdratlif Exp $
 
-#ifndef _MPGFRAME_HH_
-#define _MPGFRAME_HH_
+#ifndef MPG_MPGFRAME_HH_
+#define MPG_MPGFRAME_HH_
 
 #include <wx/spinctrl.h>
 

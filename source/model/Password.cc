@@ -1,6 +1,6 @@
 /*
  * Metroid Password Generator
- * Copyright (C) 2005 emuWorks
+ * Copyright (C) 2005,2007-2008 emuWorks
  * http://games.technoplaza.net/
  *
  * This file is part of Metroid Password Generator.
@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: Password.cc,v 1.11 2007/02/20 19:27:17 technoplaza Exp $
+// $Id: Password.cc,v 1.13 2008/12/17 01:04:21 jdratlif Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -32,8 +32,8 @@
 
 using namespace mpg;
 
-const wxString Password::ALPHABET(wxT("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                      "abcdefghijklmnopqrstuvwxyz?- "));
+const wxString Password::ALPHABET(wxT("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+                                  wxT("abcdefghijklmnopqrstuvwxyz?- "));
 
 Password::Password() {
     std::memset(data, 0, PASSWORD_LENGTH_BYTES);
