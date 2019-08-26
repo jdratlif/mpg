@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-| Metroid Password Generator 0.93
+| Metroid Password Generator 0.94
 | Copyright (C) 2005 emuWorks http://games.technoplaza.net/
 | by John Ratliff [ webmaster AT technoplaza DOT net ]
 --------------------------------------------------------------------------------
@@ -488,7 +488,7 @@
   items, missile containers, energy tanks, red & yellow doors, statues,
   zebetites, bosses, and missile count.
   
-  Items: Gives All Items (All Equipment Except Wave Beam)
+  Items: Gives All Items
   Missile Containers: All Missile Containers (105 possible missiles with these)
   Energy Tanks: All 8 Energy Tanks
   Red & Yellow Doors: All 19 Red & Yellow Doors Open
@@ -582,8 +582,12 @@
 | 5.0 Release History
 --------------------------------------------------------------------------------
 
-  Version 0.93 - Saturday, October 2, 2005
+  Version 0.94 - Monday, October 3, 2005
+    - Removed restriction on Wave Beam + Ice Beam
+
+  Version 0.93 - Sunday, October 2, 2005
     - Added Metroid Password Format Guide to docs
+    - Changed password text size to 11 point
     - Fixed crashing bug in Linux GTK+ 2.0 if the shift byte was changed to 0
     - Replaced spin controls with text control + spin button
     - Updated the readme to correct many misc. things

@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.hh,v 1.32 2005/10/02 01:31:41 technoplaza Exp $
+// $Id: MPGFrame.hh,v 1.35 2005/10/04 02:32:56 technoplaza Exp $
 
 #ifndef _MPGFRAME_HH_
 #define _MPGFRAME_HH_
@@ -45,8 +45,6 @@ namespace mpg {
         enum {
             BRINSTAR, KRAIDSLAIR, NORFAIR, RIDLEYSLAIR, TOURIAN
         };
-        
-        static const int MAX_MISSILES = 255;
     
         /**
          * Creates the controls for this MPGFrame.

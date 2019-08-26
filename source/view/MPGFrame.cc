@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.cc,v 1.42 2005/10/02 05:35:16 technoplaza Exp $
+// $Id: MPGFrame.cc,v 1.45 2005/10/04 02:32:56 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -765,7 +765,6 @@ void MPGFrame::onItemChanged(wxCommandEvent &event) {
     int id = event.GetId();
     bool state = event.IsChecked();
     int b1, b2 = -1;
-    wxCheckListBox *ctrl = XRCCTRL(*this, "IDCLB_RAW_BITS", wxCheckListBox);
     
     if (id == XRCID("IDC_ITEMS_MARUMARI")) {
         b1 = MARUMARI;
@@ -774,18 +773,8 @@ void MPGFrame::onItemChanged(wxCommandEvent &event) {
         b1 = LONGBEAM;
     } else if (id == XRCID("IDC_ITEMS_WAVEBEAM")) {
         b1 = WAVEBEAM;
-        
-        // can't use wave beam and ice beam simultaneously
-        XRCCTRL(*this, "IDC_ITEMS_ICEBEAM", wxCheckBox)->SetValue(false);
-        ctrl->Check(ICEBEAM, false);
-        password.setBit(ICEBEAM, false);
     } else if (id == XRCID("IDC_ITEMS_ICEBEAM")) {
         b1 = ICEBEAM;
-        
-        // can't use wave beam and ice beam simultaneously
-        XRCCTRL(*this, "IDC_ITEMS_WAVEBEAM", wxCheckBox)->SetValue(false);
-        ctrl->Check(WAVEBEAM, false);
-        password.setBit(WAVEBEAM, false);
     } else if (id == XRCID("IDC_ITEMS_BOMBS")) {
         b1 = BOMBS;
         b2 = BOMBS_TAKEN;
@@ -800,6 +789,7 @@ void MPGFrame::onItemChanged(wxCommandEvent &event) {
         b2 = VARIA_TAKEN;
     }
     
+    wxCheckListBox *ctrl = XRCCTRL(*this, "IDCLB_RAW_BITS", wxCheckListBox);
     ctrl->Check(b1, state);
     password.setBit(b1, state);
     
@@ -1016,7 +1006,7 @@ void MPGFrame::onPasswordGiveItems(wxCommandEvent &) {
     password.setBit(MARUMARI_TAKEN);
     
     password.setBit(LONGBEAM);
-    password.setBit(WAVEBEAM, false);
+    password.setBit(WAVEBEAM);
     password.setBit(ICEBEAM);
     
     password.setBit(BOMBS);
@@ -1117,9 +1107,6 @@ void MPGFrame::onPasswordGiveZebetites(wxCommandEvent &) {
 
 void MPGFrame::onPasswordPerfectGame(wxCommandEvent &) {
     password = Password();
-
-    // Missile Inventory
-    password.setMissiles(MAX_MISSILES);
     
     // Start Location
     password.setBit(START_NF);
@@ -1139,27 +1126,35 @@ void MPGFrame::onPasswordPerfectGame(wxCommandEvent &) {
     // Items
     wxCommandEvent event1(wxEVT_COMMAND_MENU_SELECTED,
                           XRCID("IDM_PASSWORD_GIVE_ITEMS"));
-    GetEventHandler()->AddPendingEvent(event1);
+    GetEventHandler()->ProcessEvent(event1);
+    
+    // remove the wave beam
+    password.setBit(WAVEBEAM, false);
     
     // Missile Containers
     wxCommandEvent event2(wxEVT_COMMAND_MENU_SELECTED,
                           XRCID("IDM_PASSWORD_GIVE_MC"));
-    GetEventHandler()->AddPendingEvent(event2);
+    GetEventHandler()->ProcessEvent(event2);
+    
+    // Missiles
+    wxCommandEvent event3(wxEVT_COMMAND_MENU_SELECTED,
+                          XRCID("IDM_PASSWORD_GIVE_MISSILES"));
+    GetEventHandler()->ProcessEvent(event3);
     
     // Energy Tanks
-    wxCommandEvent event3(wxEVT_COMMAND_MENU_SELECTED,
+    wxCommandEvent event4(wxEVT_COMMAND_MENU_SELECTED,
                           XRCID("IDM_PASSWORD_GIVE_ET"));
-    GetEventHandler()->AddPendingEvent(event3);
+    GetEventHandler()->ProcessEvent(event4);
     
     // Red & Yellow Doors
-    wxCommandEvent event4(wxEVT_COMMAND_MENU_SELECTED,
+    wxCommandEvent event5(wxEVT_COMMAND_MENU_SELECTED,
                           XRCID("IDM_PASSWORD_GIVE_DOORS"));
-    GetEventHandler()->AddPendingEvent(event4);
+    GetEventHandler()->ProcessEvent(event5);
     
     // Zebetites
-    wxCommandEvent event5(wxEVT_COMMAND_MENU_SELECTED,
+    wxCommandEvent event6(wxEVT_COMMAND_MENU_SELECTED,
                           XRCID("IDM_PASSWORD_GIVE_ZEBETITES"));
-    GetEventHandler()->AddPendingEvent(event5);
+    GetEventHandler()->ProcessEvent(event6);
 }
 
 void MPGFrame::onPasswordReset(wxCommandEvent &) {
