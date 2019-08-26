@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.cc,v 1.30 2005/09/28 01:46:23 technoplaza Exp $
+// $Id: MPGFrame.cc,v 1.31 2005/09/29 05:42:31 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -164,6 +164,9 @@ BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
         MPGFrame::onPasswordGiveZebetites)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_BOSSES"), MPGFrame::onPasswordGiveBosses)
     
+    EVT_MENU(XRCID("IDM_GAME_NTSC"), MPGFrame::onGameChanged)
+    EVT_MENU(XRCID("IDM_GAME_PAL"), MPGFrame::onGameChanged)
+    
     EVT_MENU(wxID_ABOUT, MPGFrame::onHelpAbout)
     
     EVT_RADIOBOX(XRCID("IDRB_MISC_START"), MPGFrame::onStartLocationChanged)
@@ -175,7 +178,9 @@ BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
     EVT_TEXT(XRCID("IDT_PASSWORD"), MPGFrame::onPasswordChanged)
 END_EVENT_TABLE()
 
-MPGFrame::MPGFrame() : fixChecksumButton(NULL), ignoreTextEvent(true) {
+MPGFrame::MPGFrame() : fixChecksumButton(NULL),
+                       ignoreTextEvent(true),
+                       pal(false) {
     SetParent(NULL);
     
     CreateControls();
@@ -390,6 +395,9 @@ void MPGFrame::updateControls() {
             wxSpinCtrl)->SetValue(password.getShift());
     ignoreTextEvent = false;
     
+    // update the real time value
+    updateRealTime();
+    
     // update the start location
     updateStartLocation();
     
@@ -449,6 +457,28 @@ void MPGFrame::updateRawMissiles(unsigned char value) {
     for (int i = 0; i < 8; ++i) {
         ctrl->Check(MISSILES + i, (value & (1 << i)));
     }
+}
+
+void MPGFrame::updateRealTime() {
+    wxUint32 ticks = password.getGameTime();
+    unsigned char lsb = (ticks & 0xFF);
+    
+    if (lsb >= 0xD0) {
+        lsb = 0xCF;
+    }
+    
+    ticks = (((ticks & 0xFFFFFF00) >> 8) * 0xD0) + lsb;
+    
+    double factor = (pal ? (256.0 / 50.0) : (256.0 / 60.0));
+    double time = ticks * factor;
+
+    int hours = static_cast<int>(time / 3600);
+    int minutes = static_cast<int>(fmod(time / 60, 60));
+    int seconds = static_cast<int>(fmod(time, 60));
+    
+    XRCCTRL(*this, "IDST_MISC_GAMETIME",
+        wxStaticText)->SetLabel(wxString::Format("Approx %d Hr %d Min %d Sec",
+                                                 hours, minutes, seconds));
 }
 
 void MPGFrame::updateStartLocation() {
@@ -620,6 +650,12 @@ void MPGFrame::onFixChecksum(wxCommandEvent &) {
     updateControls();
 }
 
+void MPGFrame::onGameChanged(wxCommandEvent &event) {
+    pal = (event.GetId() == XRCID("IDM_GAME_PAL"));
+    
+    updateRealTime();
+}
+
 void MPGFrame::onGameTimeChanged(wxCommandEvent &event) {
     if (ignoreTextEvent) {
         return;
@@ -633,6 +669,7 @@ void MPGFrame::onGameTimeChanged(wxCommandEvent &event) {
         updateRawGameTime(ticks);
         password.setGameTime(ticks);
         
+        updateRealTime();
         updatePasswordText();
     }
 }
@@ -1404,6 +1441,9 @@ void MPGFrame::onRawBitChanged(wxCommandEvent &event) {
                         wxTextCtrl)->SetValue(wxString::Format(wxT("%lu"),
                                               value));
                 ignoreTextEvent = false;
+                
+                // update the real time value, too
+                updateRealTime();
             }
             
             break;

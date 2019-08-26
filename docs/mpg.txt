@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-| Metroid Password Generator 0.90
+| Metroid Password Generator 0.91
 | Copyright (C) 2005 emuWorks http://games.technoplaza.net/
 | by John Ratliff [ webmaster AT technoplaza DOT net ]
 --------------------------------------------------------------------------------
@@ -22,6 +22,7 @@
       - 3.6.3 Reset
       - 3.6.4 The Ending Submenu
       - 3.6.5 The Give Submenu
+    - 3.7 The Game Menu
   - 4.0 Known Bugs and Issues
   - 5.0 Release History
   - 6.0 Contacting the Author
@@ -163,25 +164,30 @@
   same way (except of course for the Tourian Bridge).
   
   The game time is special for much the same reason the missile count was
-  special. Instead of being an 8-bit value here, though, it is a 32-bit value,
-  ranging from 0 to 42944967296 - 1. SnoBro thought the value was 24-bit, but he
-  is wrong. I believe he misread the Metroid source, just as I did when I first
-  glanced at it. After tracing the code though, I confirmed it is 32-bit.
+  special. Instead of being an 8-bit value here, though, it is a limited range
+  32-bit value. The upper 24-bits have the full range, but the lowest 8 bits
+  overflow at 208 (0xD0 hex). This means there are 3,489,660,720 distinct
+  values in the range 0 - (4,294,967,296 - 1). Because the least significant
+  byte with overflow at any value >= 208, we treat the value as if it were truly
+  32-bit, though the game doesn't distinguish values where the lowest byte is
+  in the range 208 - 255. 208 + 1 = 0 for the lowest byte.
   
   The game time is special for another reason. It is specified in what I will
-  call 'game ticks'. 1 game tick = ~4 seconds. SnoBro calculated it as closer
-  to ~4.266666666667 seconds (or more precisely 1 tick = 256 frames with the
-  NTSC (US) NES running 60 frames per second). Since I don't have a PAL version
-  of Metroid, I can't test if the time is different on a PAL (European) NES, but
-  I'm 99% positive it would be. In this case, a PAL NES runs at 50 frames per
-  second, which would mean 1 tick = 256 / 50 fps = 5.12 seconds. The ending time
-  probably won't be different, but if you wanted to calculate 1 hour in game
-  ticks, you would need this conversion for a PAL copy of Metroid.
+  call 'game ticks'. A tick is equal to 256 frames, where 1 frame occurs each
+  time an NMI (non-maskable interrupt) occurs, which is always triggered as the
+  final scanline is written. If that made sense to you, good; if not, then
+  forget it and read the next paragraph instead.
   
-  If you want a particular game time, you can just take the number of seconds
-  you want and divide by 4 (or 5 for PAL Metroid) for a good approximation. If
-  you want precision, take the number of seconds times 256 and divide that
-  number by 60 for the NTSC (US) Metroid, or 50 for the PAL (European) Metroid.
+  Since television signals differ from Europe to the US version, there are two
+  conversions for turning game ticks into seconds. The NTSC (US) Nintendo ran at
+  60Hz, or 60 frames per second, because the US television signal runs at that
+  speed. This means for Metroid run on a NTSC (US) Nintendo, 1 game tick =
+  (256 frames / 60 frames per second) = approx 4.2666666666666666666666666666667
+  seconds. For Metroid run on a PAL (European) Nintendo, 1 game tick =
+  (256 frames / 50 frames per second) = 5.12 seconds.
+  
+  NTSC Metroid: 1 game tick = ~4 seconds
+  PAL Metroid: 1 game tick = ~5 seconds
   
   The third panel, labelled 'Raw' will be covered in 3.3 Raw Encoding.
   
@@ -437,7 +443,7 @@
   b, and 5 for a, giving us a total of 10 endings.
   
   There may be more than 10 endings. I have done research to find out the
-  exact times, but this is still based on what I have read in tutorials, that
+  exact times, but this is still based on what I have read in tutorials; that
   endings are based on the two factors.
   
   So, there are five changes based on time.
@@ -454,21 +460,11 @@
   I have done tests to find out the precise numbers (in game ticks) that cause
   the 5 time endings.
   
-  1) Game Time < 1024 ticks (approx 1 hr 13 min)
-  2) Game Time < 2560 ticks (approx 3 hr 2 min)
-  3) Game Time < 5632 ticks (approx 6 hr 41 min)
-  4) Game Time < 31232 ticks (approx 37 hr 1 min)
-  5) Game Time >= 31232 ticks (approx 37 hr 1 min)
-  
-  Some people say 5 can be triggered at > 5 hr with Samus wearing her swimsuit.
-  I tried this, and it didn't give me that ending. I got ending 4. I think they
-  must not know what they are talking about and just guessed about 5 hours.
-  
-  I calculated the approximate times using the conversion 1 game tick equals
-  4.266667 seconds. Floating point numbers aren't highly accurate, so 6 decimal
-  places seemed more than sufficient. I doubt using a higher precision
-  conversion factor would yield different results only going to the minute, but
-  feel free to correct me if I'm wrong.
+  1) Game Time < 1024 ticks (approx 0 hr 59 min NTSC or 1 hr 11 min PAL)
+  2) Game Time < 2560 ticks (approx 2 hr 28 min NTSC or 2 hr 57 min PAL)
+  3) Game Time < 5632 ticks (approx 5 hr 25 min NTSC or 6 hr 30 min PAL)
+  4) Game Time < 31232 ticks (approx 30 hr 5 min NTSC or 36 hr 5 min PAL)
+  5) Game Time >= 31232 ticks
   
   Now, as for the Endings submenu. The purpose of this menu is to change the
   game time to yield one of the ending results based on time. It will change
@@ -497,6 +493,18 @@
   whatever your carrying capacity is. If you have all missile containers and
   both bosses are dead, then you can have 255. Kraid and Ridley are worth 75 a
   piece. Each missile container is another 5, of which there are 21 containers.
+  
+--------------------------------------------------------------------------------
+| 3.7 The Game Menu
+--------------------------------------------------------------------------------
+
+  The Game menu is used to select between NTSC and PAL versions of Metroid, for
+  the US and European Nintendos, respectively. The only thing it affects is the
+  calculation of the approximate time next to the game ticks control.
+  
+  The selection defaults to NTSC since it is what I use. If you have a PAL
+  version of Metroid, you can change it using the menu to see what real times
+  correspond to what game ticks.
 
 --------------------------------------------------------------------------------
 | 4.0 Known Bugs and Issues
@@ -527,6 +535,11 @@
 | 5.0 Release History
 --------------------------------------------------------------------------------
 
+  Version 0.91 - Thursday, September 29, 2005
+    - Fixed readme regarding invalid game tick conversions
+    - Added real time label next to game ticks
+    - Added game menu for NTSC/PAL time conversion
+  
   Version 0.90 - Wednesday, September 28, 2005
     - First Public Release
   

@@ -91,6 +91,20 @@
                 </object>
             </object>
             <object class="wxMenu">
+                <label>&amp;Game</label>
+                <object class="wxMenuItem" name="IDM_GAME_NTSC">
+                    <label>&amp;NTSC (US Version)</label>
+                    <radio>1</radio>
+                    <checked>1</checked>
+                    <help>Use NTSC Timings to Convert Game Ticks to Real Time</help>
+                </object>
+                <object class="wxMenuItem" name="IDM_GAME_PAL">
+                    <label>&amp;PAL (European Version)</label>
+                    <radio>1</radio>
+                    <help>Use PAL Timings to Convert Game Ticks to Real Time</help>
+                </object>
+            </object>
+            <object class="wxMenu">
                 <label>&amp;Help</label>
                 <object class="wxMenuItem" name="wxID_ABOUT">
                     <label>About</label>
@@ -581,6 +595,13 @@
                                             <border>5</border>
                                             <object class="wxTextCtrl" name="IDT_MISC_GAMETIME">
                                                 <value>0</value>
+                                            </object>
+                                        </object>
+                                        <object class="sizeritem">
+                                            <flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT</flag>
+                                            <border>5</border>
+                                            <object class="wxStaticText" name="IDST_MISC_GAMETIME">
+                                                <label>Approx 0 Hr 0 Min 0 Sec</label>
                                             </object>
                                         </object>
                                     </object>

@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.hh,v 1.27 2005/09/28 03:43:33 technoplaza Exp $
+// $Id: MPGFrame.hh,v 1.28 2005/09/29 05:42:31 technoplaza Exp $
 
 #ifndef _MPGFRAME_HH_
 #define _MPGFRAME_HH_
@@ -40,7 +40,7 @@ namespace mpg {
     private:
         wxButton *fixChecksumButton;
         Password password;
-        bool ignoreTextEvent;
+        bool ignoreTextEvent, pal;
         
         enum {
             BRINSTAR, KRAIDSLAIR, NORFAIR, RIDLEYSLAIR, TOURIAN
@@ -84,6 +84,11 @@ namespace mpg {
          * @param value The missile count value.
          */
         void updateRawMissiles(unsigned char value);
+        
+        /**
+         * Updates the approximate real time label.
+         */
+        void updateRealTime();
         
         /**
          * Updates the start location radio box control.
@@ -136,6 +141,13 @@ namespace mpg {
          * @param event The triggering wxCommandEvent (unused).
          */
         void onFixChecksum(wxCommandEvent &event);
+        
+        /**
+         * Called when NTSC or PAL is selected from the game menu.
+         *
+         * @param event The triggering wxCommandEvent.
+         */
+        void onGameChanged(wxCommandEvent &event);
         
         /**
          * Called when the game time is changed.
