@@ -53,7 +53,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am__mpg_SOURCES_DIST = AppConstants.hh MPGApp.cc MPGApp.hh \
 	exceptions/InvalidPasswordException.cc \
 	exceptions/InvalidPasswordException.hh model/Password.cc \
-	model/Password.hh view/MPGFrame.cc view/MPGFrame.hh \
+	model/Password.hh res/mpg.cc view/MPGFrame.cc view/MPGFrame.hh \
 	view/PasswordPanel.cc view/PasswordPanel.hh \
 	view/PasswordTextCtrl.cc view/PasswordTextCtrl.hh \
 	res/windows.rc
@@ -61,11 +61,10 @@ am__dirstamp = $(am__leading_dot)dirstamp
 @WINDOWS_TRUE@am__objects_1 = res/windows.$(OBJEXT)
 am_mpg_OBJECTS = MPGApp.$(OBJEXT) \
 	exceptions/InvalidPasswordException.$(OBJEXT) \
-	model/Password.$(OBJEXT) view/MPGFrame.$(OBJEXT) \
-	view/PasswordPanel.$(OBJEXT) view/PasswordTextCtrl.$(OBJEXT) \
-	$(am__objects_1)
-nodist_mpg_OBJECTS = res/mpg.$(OBJEXT)
-mpg_OBJECTS = $(am_mpg_OBJECTS) $(nodist_mpg_OBJECTS)
+	model/Password.$(OBJEXT) res/mpg.$(OBJEXT) \
+	view/MPGFrame.$(OBJEXT) view/PasswordPanel.$(OBJEXT) \
+	view/PasswordTextCtrl.$(OBJEXT) $(am__objects_1)
+mpg_OBJECTS = $(am_mpg_OBJECTS)
 mpg_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -79,7 +78,7 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(mpg_SOURCES) $(nodist_mpg_SOURCES)
+SOURCES = $(mpg_SOURCES)
 DIST_SOURCES = $(am__mpg_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
@@ -174,18 +173,15 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AUTOMAKE_OPTIONS = subdir-objects
-EXTRA_DIST = res/icon32x32.ico res/icon32x32.xpm \
-	res/alphabet.xpm res/mpg.xrc
-
+EXTRA_DIST = res/icon32x32.ico res/icon32x32.xpm res/alphabet.xpm res/mpg.xrc
 CLEANFILES = res/mpg.cc
 mpg_SOURCES = AppConstants.hh MPGApp.cc MPGApp.hh \
 	exceptions/InvalidPasswordException.cc \
 	exceptions/InvalidPasswordException.hh model/Password.cc \
-	model/Password.hh view/MPGFrame.cc view/MPGFrame.hh \
+	model/Password.hh res/mpg.cc view/MPGFrame.cc view/MPGFrame.hh \
 	view/PasswordPanel.cc view/PasswordPanel.hh \
 	view/PasswordTextCtrl.cc view/PasswordTextCtrl.hh \
 	$(am__append_1)
-nodist_mpg_SOURCES = res/mpg.cc
 all: all-am
 
 .SUFFIXES:
@@ -259,6 +255,13 @@ model/$(DEPDIR)/$(am__dirstamp):
 	@: > model/$(DEPDIR)/$(am__dirstamp)
 model/Password.$(OBJEXT): model/$(am__dirstamp) \
 	model/$(DEPDIR)/$(am__dirstamp)
+res/$(am__dirstamp):
+	@$(mkdir_p) res
+	@: > res/$(am__dirstamp)
+res/$(DEPDIR)/$(am__dirstamp):
+	@$(mkdir_p) res/$(DEPDIR)
+	@: > res/$(DEPDIR)/$(am__dirstamp)
+res/mpg.$(OBJEXT): res/$(am__dirstamp) res/$(DEPDIR)/$(am__dirstamp)
 view/$(am__dirstamp):
 	@$(mkdir_p) view
 	@: > view/$(am__dirstamp)
@@ -271,15 +274,8 @@ view/PasswordPanel.$(OBJEXT): view/$(am__dirstamp) \
 	view/$(DEPDIR)/$(am__dirstamp)
 view/PasswordTextCtrl.$(OBJEXT): view/$(am__dirstamp) \
 	view/$(DEPDIR)/$(am__dirstamp)
-res/$(am__dirstamp):
-	@$(mkdir_p) res
-	@: > res/$(am__dirstamp)
-res/$(DEPDIR)/$(am__dirstamp):
-	@$(mkdir_p) res/$(DEPDIR)
-	@: > res/$(DEPDIR)/$(am__dirstamp)
 res/windows.$(OBJEXT): res/$(am__dirstamp) \
 	res/$(DEPDIR)/$(am__dirstamp)
-res/mpg.$(OBJEXT): res/$(am__dirstamp) res/$(DEPDIR)/$(am__dirstamp)
 mpg$(EXEEXT): $(mpg_OBJECTS) $(mpg_DEPENDENCIES) 
 	@rm -f mpg$(EXEEXT)
 	$(CXXLINK) $(mpg_LDFLAGS) $(mpg_OBJECTS) $(mpg_LDADD) $(LIBS)

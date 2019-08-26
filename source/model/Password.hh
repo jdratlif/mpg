@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: Password.hh,v 1.10 2005/09/27 09:32:14 technoplaza Exp $
+// $Id: Password.hh,v 1.11 2007/02/20 19:27:17 technoplaza Exp $
 
 #ifndef _PASSWORD_HH_
 #define _PASSWORD_HH_
@@ -118,20 +118,16 @@ namespace mpg {
          * @param bit The bit to get (1-128).
          *
          * @return true if the bit is set; false otherwise.
-         *
-         * @throw std::out_of_range if the bit is outside the range [0,127].
          */
-        bool getBit(int bit) const throw(std::out_of_range);
+        bool getBit(int bit) const;
         
         /**
          * Sets a bit in the raw password data.
          *
          * @param bit the bit to set (1-128).
          * @param value true to set the bit; false to clear it.
-         *
-         * @throw std::out_of_range if the bit is outside the range [0,127].
          */
-        void setBit(int bit, bool value = true) throw(std::out_of_range);
+        void setBit(int bit, bool value = true);
         
         /**
          * Gets the encoded Metroid password encapsulated by this Password.

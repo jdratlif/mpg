@@ -161,7 +161,9 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 SUBDIRS = source
-EXTRA_DIST = apidocs docs/*.txt DialogBlocks/mpg.pjd Doxyfile TODO Info.plist
+EXTRA_DIST = apidocs docs/*.txt DialogBlocks/mpg.pjd Doxyfile TODO Info.plist \
+	vc.net/mpg/mpg.sln vc.net/mpg/mpg.vcproj
+
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -353,7 +355,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/DialogBlocks $(distdir)/docs
+	$(mkdir_p) $(distdir)/DialogBlocks $(distdir)/docs $(distdir)/vc.net/mpg
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -589,14 +591,20 @@ uninstall-info: uninstall-info-recursive
 	uninstall-info-am
 
 
+.PHONY: allclean apidocs touch
+
 allclean: clean
 	-rm -rf apidocs
 	-rm -f *.bz2 *.gz
 	-find -iname "*~" -exec rm -f {} \;
 
-.PHONY: apidocs
 apidocs: Doxyfile
 	@doxygen
+
+touch:
+	-find -iname "*.cc" -exec touch {} \;
+	-find -iname "*.hh" -exec touch {} \;
+	-find -iname "*.xrc" -exec touch {} \;
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

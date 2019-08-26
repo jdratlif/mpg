@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: PasswordPanel.cc,v 1.2 2005/09/27 09:06:12 technoplaza Exp $
+// $Id: PasswordPanel.cc,v 1.3 2007/02/20 19:27:17 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -40,12 +40,7 @@
 
 using namespace mpg;
 
-BEGIN_EVENT_TABLE(PasswordPanel, wxPanel)
-    EVT_ERASE_BACKGROUND(PasswordPanel::onEraseBackground)
-    EVT_PAINT(PasswordPanel::onPaint)
-END_EVENT_TABLE()
-
-PasswordPanel::PasswordPanel() : alphabet(alphabet_xpm), password(NULL) {}
+PasswordPanel::PasswordPanel() : alphabet(alphabet_xpm), password(0) {}
 
 wxPoint PasswordPanel::getLetterPos(wxChar letter) const {
     int index = Password::ALPHABET.Find(letter);
@@ -92,4 +87,9 @@ void PasswordPanel::onPaint(wxPaintEvent &) {
 }
 
 IMPLEMENT_DYNAMIC_CLASS(PasswordPanel, wxPanel)
+
+BEGIN_EVENT_TABLE(PasswordPanel, wxPanel)
+    EVT_ERASE_BACKGROUND(PasswordPanel::onEraseBackground)
+    EVT_PAINT(PasswordPanel::onPaint)
+END_EVENT_TABLE()
 

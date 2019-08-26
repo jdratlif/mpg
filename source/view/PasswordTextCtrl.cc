@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: PasswordTextCtrl.cc,v 1.7 2005/09/30 10:01:46 technoplaza Exp $
+// $Id: PasswordTextCtrl.cc,v 1.8 2007/02/20 19:27:17 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -38,11 +38,6 @@
 #include "view/PasswordTextCtrl.hh"
 
 using namespace mpg;
-
-BEGIN_EVENT_TABLE(PasswordTextCtrl, wxTextCtrl)
-    EVT_CHAR(PasswordTextCtrl::onChar)
-    EVT_KEY_DOWN(PasswordTextCtrl::onKeyDown)
-END_EVENT_TABLE()
 
 wxString PasswordTextCtrl::GetValue() const {
     wxString temp = wxTextCtrl::GetValue();
@@ -208,4 +203,9 @@ void PasswordTextCtrl::onKeyDown(wxKeyEvent &event) {
 }
 
 IMPLEMENT_DYNAMIC_CLASS(PasswordTextCtrl, wxTextCtrl)
+
+BEGIN_EVENT_TABLE(PasswordTextCtrl, wxTextCtrl)
+    EVT_CHAR(PasswordTextCtrl::onChar)
+    EVT_KEY_DOWN(PasswordTextCtrl::onKeyDown)
+END_EVENT_TABLE()
 

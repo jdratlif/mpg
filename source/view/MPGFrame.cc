@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.cc,v 1.45 2005/10/04 02:32:56 technoplaza Exp $
+// $Id: MPGFrame.cc,v 1.46 2007/02/20 19:27:17 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -42,166 +42,10 @@
 
 using namespace mpg;
 
-BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
-    EVT_BUTTON(XRCID("IDB_CHECKSUM"), MPGFrame::onFixChecksum)
-
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MARUMARI"), MPGFrame::onItemChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_LONGBEAM"), MPGFrame::onItemChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_WAVEBEAM"), MPGFrame::onItemChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ICEBEAM"), MPGFrame::onItemChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_BOMBS"), MPGFrame::onItemChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_HIGHJUMPBOOTS"), MPGFrame::onItemChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_SCREWATTACK"), MPGFrame::onItemChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_VARIA"), MPGFrame::onItemChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_BS1"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_BS2"), MPGFrame::onMissileContainerChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL1"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL2"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL3"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL4"), MPGFrame::onMissileContainerChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF1"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF2"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF3"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF4"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF5"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF6"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF7"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF8"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF9"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF10"), 
-                 MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF11"),
-                 MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF12"),
-                 MPGFrame::onMissileContainerChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_RL1"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_RL2"), MPGFrame::onMissileContainerChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_RL3"), MPGFrame::onMissileContainerChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_BS1"), MPGFrame::onEnergyTankChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_BS2"), MPGFrame::onEnergyTankChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_BS3"), MPGFrame::onEnergyTankChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_NF"), MPGFrame::onEnergyTankChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_KL"), MPGFrame::onEnergyTankChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_KL_KRAID"), MPGFrame::onEnergyTankChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_RL"), MPGFrame::onEnergyTankChanged)
-    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_RL_RIDLEY"), MPGFrame::onEnergyTankChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_LONGBEAM"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_TOURIANBRIDGE"),
-                 MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_BOMBS"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_ICEBEAM"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_VARIA"), MPGFrame::onDoorChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL1"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL2"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL3"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL4"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL_KRAID"), MPGFrame::onDoorChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_HIGHJUMPBOOTS"),
-                 MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_SCREWATTACK"),
-                 MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_WAVEBEAM"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_ICEBEAM"), MPGFrame::onDoorChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_RL"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_RL_RIDLEY"), MPGFrame::onDoorChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_T1"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_T2"), MPGFrame::onDoorChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_T3"), MPGFrame::onDoorChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_STATUE_KRAID"), MPGFrame::onStatueChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_STATUE_RIDLEY"), MPGFrame::onStatueChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE1"), MPGFrame::onZebetiteChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE2"), MPGFrame::onZebetiteChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE3"), MPGFrame::onZebetiteChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE4"), MPGFrame::onZebetiteChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE5"), MPGFrame::onZebetiteChanged)
-    
-    EVT_CHECKBOX(XRCID("IDC_MISC_BOSS_KRAID"), MPGFrame::onBossChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_BOSS_RIDLEY"), MPGFrame::onBossChanged)
-    EVT_CHECKBOX(XRCID("IDC_MISC_BOSS_MOTHERBRAIN"), MPGFrame::onBossChanged)
-    
-    EVT_CHECKLISTBOX(XRCID("IDCLB_RAW_BITS"), MPGFrame::onRawBitChanged)
-    
-    EVT_MENU(wxID_EXIT, MPGFrame::onFileExit)
-    
-    EVT_MENU(XRCID("IDM_PASSWORD_PERFECTGAME"),
-             MPGFrame::onPasswordPerfectGame)
-    EVT_MENU(XRCID("IDM_PASSWORD_DEBUGPASSWORD"),
-             MPGFrame::onPasswordDebugPassword)
-    EVT_MENU(XRCID("IDM_PASSWORD_RESET"), MPGFrame::onPasswordReset)
-    
-    EVT_MENU(XRCID("IDM_PASSWORD_ENDING1"), MPGFrame::onPasswordEnding)
-    EVT_MENU(XRCID("IDM_PASSWORD_ENDING2"), MPGFrame::onPasswordEnding)
-    EVT_MENU(XRCID("IDM_PASSWORD_ENDING3"), MPGFrame::onPasswordEnding)
-    EVT_MENU(XRCID("IDM_PASSWORD_ENDING4"), MPGFrame::onPasswordEnding)
-    EVT_MENU(XRCID("IDM_PASSWORD_ENDING5"), MPGFrame::onPasswordEnding)
-    
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_MISSILES"),
-             MPGFrame::onPasswordGiveMissiles)
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ITEMS"), MPGFrame::onPasswordGiveItems)
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_MC"),
-             MPGFrame::onPasswordGiveMissileContainers)
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ET"),
-             MPGFrame::onPasswordGiveEnergyTanks)
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_DOORS"), MPGFrame::onPasswordGiveDoors)
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_STATUES"),
-             MPGFrame::onPasswordGiveStatues)
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ZEBETITES"),
-             MPGFrame::onPasswordGiveZebetites)
-    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_BOSSES"), MPGFrame::onPasswordGiveBosses)
-    
-    EVT_MENU(XRCID("IDM_GAME_NTSC"), MPGFrame::onGameSystem)
-    EVT_MENU(XRCID("IDM_GAME_PAL"), MPGFrame::onGameSystem)
-    
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT1"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT2"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT3"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT4"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT5"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT6"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT7"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT8"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT9"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT10"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT11"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT12"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT13"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT14"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT15"), MPGFrame::onChecksumShift)
-    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT16"), MPGFrame::onChecksumShift)
-    
-    EVT_MENU(wxID_ABOUT, MPGFrame::onHelpAbout)
-    
-    EVT_RADIOBOX(XRCID("IDRB_MISC_START"), MPGFrame::onStartLocationChanged)
-    EVT_RADIOBOX(XRCID("IDRB_MISC_ARMOR"), MPGFrame::onArmorChanged)
-    
-    EVT_SPIN(XRCID("IDSB_ITEMS_MISSILES"), MPGFrame::onMissilesSpinner)
-    EVT_SPIN(XRCID("IDSB_RAW_SHIFT"), MPGFrame::onShiftSpinner)
-    
-    EVT_TEXT(XRCID("IDT_ITEMS_MISSILES"), MPGFrame::onMissilesTextChanged)
-    EVT_TEXT(XRCID("IDT_MISC_GAMETIME"), MPGFrame::onGameTimeChanged)
-    EVT_TEXT(XRCID("IDT_RAW_SHIFT"), MPGFrame::onShiftTextChanged)
-    EVT_TEXT(XRCID("IDT_PASSWORD"), MPGFrame::onPasswordChanged)
-END_EVENT_TABLE()
-
-MPGFrame::MPGFrame() : fixChecksumButton(NULL),
+MPGFrame::MPGFrame() : fixChecksumButton(0),
                        ignoreTextEvent(true),
                        pal(false) {
-    SetParent(NULL);
+    SetParent(0);
     
     CreateControls();
     GetSizer()->SetSizeHints(this);
@@ -1711,4 +1555,160 @@ void MPGFrame::onZebetiteChanged(wxCommandEvent &event) {
 }
 
 IMPLEMENT_CLASS(MPGFrame, wxFrame)
+
+BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
+    EVT_BUTTON(XRCID("IDB_CHECKSUM"), MPGFrame::onFixChecksum)
+
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MARUMARI"), MPGFrame::onItemChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_LONGBEAM"), MPGFrame::onItemChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_WAVEBEAM"), MPGFrame::onItemChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ICEBEAM"), MPGFrame::onItemChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_BOMBS"), MPGFrame::onItemChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_HIGHJUMPBOOTS"), MPGFrame::onItemChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_SCREWATTACK"), MPGFrame::onItemChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_VARIA"), MPGFrame::onItemChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_BS1"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_BS2"), MPGFrame::onMissileContainerChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL1"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL2"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL3"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_KL4"), MPGFrame::onMissileContainerChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF1"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF2"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF3"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF4"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF5"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF6"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF7"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF8"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF9"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF10"), 
+                 MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF11"),
+                 MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_NF12"),
+                 MPGFrame::onMissileContainerChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_RL1"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_RL2"), MPGFrame::onMissileContainerChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_MC_RL3"), MPGFrame::onMissileContainerChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_BS1"), MPGFrame::onEnergyTankChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_BS2"), MPGFrame::onEnergyTankChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_BS3"), MPGFrame::onEnergyTankChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_NF"), MPGFrame::onEnergyTankChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_KL"), MPGFrame::onEnergyTankChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_KL_KRAID"), MPGFrame::onEnergyTankChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_RL"), MPGFrame::onEnergyTankChanged)
+    EVT_CHECKBOX(XRCID("IDC_ITEMS_ET_RL_RIDLEY"), MPGFrame::onEnergyTankChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_LONGBEAM"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_TOURIANBRIDGE"),
+                 MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_BOMBS"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_ICEBEAM"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_BS_VARIA"), MPGFrame::onDoorChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL1"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL2"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL3"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL4"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_KL_KRAID"), MPGFrame::onDoorChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_HIGHJUMPBOOTS"),
+                 MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_SCREWATTACK"),
+                 MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_WAVEBEAM"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_NF_ICEBEAM"), MPGFrame::onDoorChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_RL"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_RL_RIDLEY"), MPGFrame::onDoorChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_T1"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_T2"), MPGFrame::onDoorChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_DOORS_T3"), MPGFrame::onDoorChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_STATUE_KRAID"), MPGFrame::onStatueChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_STATUE_RIDLEY"), MPGFrame::onStatueChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE1"), MPGFrame::onZebetiteChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE2"), MPGFrame::onZebetiteChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE3"), MPGFrame::onZebetiteChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE4"), MPGFrame::onZebetiteChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_ZEBETITE5"), MPGFrame::onZebetiteChanged)
+    
+    EVT_CHECKBOX(XRCID("IDC_MISC_BOSS_KRAID"), MPGFrame::onBossChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_BOSS_RIDLEY"), MPGFrame::onBossChanged)
+    EVT_CHECKBOX(XRCID("IDC_MISC_BOSS_MOTHERBRAIN"), MPGFrame::onBossChanged)
+    
+    EVT_CHECKLISTBOX(XRCID("IDCLB_RAW_BITS"), MPGFrame::onRawBitChanged)
+    
+    EVT_MENU(wxID_EXIT, MPGFrame::onFileExit)
+    
+    EVT_MENU(XRCID("IDM_PASSWORD_PERFECTGAME"),
+             MPGFrame::onPasswordPerfectGame)
+    EVT_MENU(XRCID("IDM_PASSWORD_DEBUGPASSWORD"),
+             MPGFrame::onPasswordDebugPassword)
+    EVT_MENU(XRCID("IDM_PASSWORD_RESET"), MPGFrame::onPasswordReset)
+    
+    EVT_MENU(XRCID("IDM_PASSWORD_ENDING1"), MPGFrame::onPasswordEnding)
+    EVT_MENU(XRCID("IDM_PASSWORD_ENDING2"), MPGFrame::onPasswordEnding)
+    EVT_MENU(XRCID("IDM_PASSWORD_ENDING3"), MPGFrame::onPasswordEnding)
+    EVT_MENU(XRCID("IDM_PASSWORD_ENDING4"), MPGFrame::onPasswordEnding)
+    EVT_MENU(XRCID("IDM_PASSWORD_ENDING5"), MPGFrame::onPasswordEnding)
+    
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_MISSILES"),
+             MPGFrame::onPasswordGiveMissiles)
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ITEMS"), MPGFrame::onPasswordGiveItems)
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_MC"),
+             MPGFrame::onPasswordGiveMissileContainers)
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ET"),
+             MPGFrame::onPasswordGiveEnergyTanks)
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_DOORS"), MPGFrame::onPasswordGiveDoors)
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_STATUES"),
+             MPGFrame::onPasswordGiveStatues)
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ZEBETITES"),
+             MPGFrame::onPasswordGiveZebetites)
+    EVT_MENU(XRCID("IDM_PASSWORD_GIVE_BOSSES"), MPGFrame::onPasswordGiveBosses)
+    
+    EVT_MENU(XRCID("IDM_GAME_NTSC"), MPGFrame::onGameSystem)
+    EVT_MENU(XRCID("IDM_GAME_PAL"), MPGFrame::onGameSystem)
+    
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT1"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT2"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT3"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT4"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT5"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT6"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT7"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT8"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT9"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT10"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT11"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT12"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT13"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT14"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT15"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT16"), MPGFrame::onChecksumShift)
+    
+    EVT_MENU(wxID_ABOUT, MPGFrame::onHelpAbout)
+    
+    EVT_RADIOBOX(XRCID("IDRB_MISC_START"), MPGFrame::onStartLocationChanged)
+    EVT_RADIOBOX(XRCID("IDRB_MISC_ARMOR"), MPGFrame::onArmorChanged)
+    
+    EVT_SPIN(XRCID("IDSB_ITEMS_MISSILES"), MPGFrame::onMissilesSpinner)
+    EVT_SPIN(XRCID("IDSB_RAW_SHIFT"), MPGFrame::onShiftSpinner)
+    
+    EVT_TEXT(XRCID("IDT_ITEMS_MISSILES"), MPGFrame::onMissilesTextChanged)
+    EVT_TEXT(XRCID("IDT_MISC_GAMETIME"), MPGFrame::onGameTimeChanged)
+    EVT_TEXT(XRCID("IDT_RAW_SHIFT"), MPGFrame::onShiftTextChanged)
+    EVT_TEXT(XRCID("IDT_PASSWORD"), MPGFrame::onPasswordChanged)
+END_EVENT_TABLE()
 

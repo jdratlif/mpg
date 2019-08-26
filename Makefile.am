@@ -1,12 +1,19 @@
 SUBDIRS = source
-EXTRA_DIST = apidocs docs/*.txt DialogBlocks/mpg.pjd Doxyfile TODO Info.plist
+EXTRA_DIST = apidocs docs/*.txt DialogBlocks/mpg.pjd Doxyfile TODO Info.plist \
+	vc.net/mpg/mpg.sln vc.net/mpg/mpg.vcproj
+
+.PHONY: allclean apidocs touch
 
 allclean: clean
 	-rm -rf apidocs
 	-rm -f *.bz2 *.gz
 	-find -iname "*~" -exec rm -f {} \;
 
-.PHONY: apidocs
 apidocs: Doxyfile
 	@doxygen
+
+touch:
+	-find -iname "*.cc" -exec touch {} \;
+	-find -iname "*.hh" -exec touch {} \;
+	-find -iname "*.xrc" -exec touch {} \;
 

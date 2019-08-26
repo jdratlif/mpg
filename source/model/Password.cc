@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: Password.cc,v 1.10 2005/09/27 09:32:14 technoplaza Exp $
+// $Id: Password.cc,v 1.11 2007/02/20 19:27:17 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -53,20 +53,16 @@ Password::Password(const wxString &password, bool fixChecksum)
     encode();
 }
 
-bool Password::getBit(int bit) const throw(std::out_of_range) {
-    if ((bit < 0) || (bit > PASSWORD_BITS)) {
-        throw std::out_of_range("invalid bit: must be in range [0, 127]");
-    }
+bool Password::getBit(int bit) const {
+    wxASSERT((bit >= 0) && (bit < PASSWORD_BITS));
     
     int byte = bit / 8;
     
     return (data[byte] & (1 << (bit % 8)));
 }
 
-void Password::setBit(int bit, bool value) throw(std::out_of_range) {
-    if ((bit < 0) || (bit > PASSWORD_BITS)) {
-        throw std::out_of_range("invalid bit: must be in range [0, 127]");
-    }
+void Password::setBit(int bit, bool value) {
+    wxASSERT((bit >= 0) && (bit < PASSWORD_BITS));
     
     int byte = bit / 8;
     

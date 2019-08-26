@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-| Metroid Password Generator 0.94
+| Metroid Password Generator 1.0
 | Copyright (C) 2005 emuWorks http://games.technoplaza.net/
 | by John Ratliff [ webmaster AT technoplaza DOT net ]
 --------------------------------------------------------------------------------
@@ -581,6 +581,9 @@
 --------------------------------------------------------------------------------
 | 5.0 Release History
 --------------------------------------------------------------------------------
+
+  Version 1.0 - Tuesday, February 20, 2007
+    - Added Visual C++ 2005 project files
 
   Version 0.94 - Monday, October 3, 2005
     - Removed restriction on Wave Beam + Ice Beam
