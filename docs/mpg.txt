@@ -1,0 +1,580 @@
+--------------------------------------------------------------------------------
+| Metroid Password Generator 0.90
+| Copyright (C) 2005 emuWorks http://games.technoplaza.net/
+| by John Ratliff [ webmaster AT technoplaza DOT net ]
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+| Table of Contents
+--------------------------------------------------------------------------------
+
+  - 1.0 Introduction
+  - 2.0 Compilation and Installation
+  - 3.0 Using the Program
+    - 3.1 Encoding Basics
+    - 3.2 Decoding Basics
+    - 3.3 Raw Encoding
+    - 3.4 The Shift Byte
+    - 3.5 Checksum Fixing
+    - 3.6 The Password Menu
+      - 3.6.1 Perfect Game
+      - 3.6.2 Debug Password
+      - 3.6.3 Reset
+      - 3.6.4 The Ending Submenu
+      - 3.6.5 The Give Submenu
+  - 4.0 Known Bugs and Issues
+  - 5.0 Release History
+  - 6.0 Contacting the Author
+  - 7.0 Thank Yous and Acknowledgments
+  - 8.0 Legal Information
+  
+--------------------------------------------------------------------------------
+| 1.0 - Introduction
+--------------------------------------------------------------------------------
+
+  Welcome to Metroid Password Generator. As you may have guessed, this program
+  will help generate passwords for Metroid, the first game in the Metroid series
+  for the original NES (US and European versions only. The Japanese version used
+  the FDS and saved progress on its disk).
+  
+  But we do so much more than just generate passwords. We can also decode
+  passwords, edit your game progress, fix checksums so you can spell words in
+  your passwords, and all kinds of other fun.
+  
+  Why did I make this program when SnoBro and tapper have already created
+  a Password Generator (Metcode - The Metroid Password Creator) and a Checksum
+  Generator (metpass - Metroid Password Checksum Generator), respectively?
+  
+  First, neither of their programs work on anything but Windows, and I like
+  programs that work on Windows, Linux, and Mac OS-X, which my program does.
+  
+  Second, neither of their programs has what I would consider a great GUI
+  layout. SnoBro never released any refinements to his GUI, so you have to hunt
+  all over the listbox to find which bits to change to get the password you
+  want. It also never tells you if your password is invalid, such as when you
+  select an invalid start location or activate the reset bit. It doesn't feature
+  automatic decode, even though he has a customized text control to add spaces
+  between password segments. I will praise him for his custom text control
+  though, as it's the one thing I want that I don't have. It's on my TODO list,
+  but I didn't get around to it, and I felt like releasing the program without
+  it. Finally, even though you can edit the raw password data, you can't change
+  the shift byte.
+  
+  metpass is a little nicer for what it does. It has an interface that looks
+  like Metroid. This inspired me to put in the custom password panel which
+  displays the password in the Metroid font. I wish I could have got the
+  graphics to work so you could edit it like he does too, but I could never make
+  it work right, so I gave up. The Metroid font is hard to read sometimes
+  though, especially those lowercase q's and g's, so I like having it in a more
+  readable font, too. Second, you can change the shift byte in his, but you
+  don't know you're doing it. He also only lets you use 16 of the possible 255
+  shift values. I understand his reasoning, but I don't like limitations.
+  Finally, the most damning thing is that you don't know what the password does
+  unless you decode it with another password generator. He suggests using
+  SnoBro's to find out what the password does. I thought the two should be
+  combined, so I did.
+  
+  Third, SnoBro's list doesn't know what all the password bits do. He did a lot
+  of research, and learned a few things I didn't (which I borrowed -- Thanks
+  SnoBro). I have figured out what 116 of the 128 bits mean, borrowing three
+  bits from SnoBro's list (the reset bit, mother brain's death, and samus
+  without her swimsuit). By constract, SnoBro has 72/128 bits defined.
+  
+  Finally, I do something that neither program does. Organization of the GUI.
+  Instead of one big checkbox list, we have the different controls compiling
+  the things which you would expect to be together, but aren't in the raw
+  password data. There are 11 categories (missile count, items, missile
+  containers, energy tanks, red/yellow doors, start location, statues, armor,
+  zebetites, and bosses) of controls. I was hoping to be able to be specific
+  about which bit maps to each specific thing, but it's hard to specify which
+  energy tank or missile container or red door you're talking about without a
+  good point of refernece, and there aren't any public maps I could find that
+  list information like that. I have been as specific as I could be.
+  
+  Please, please don't think I'm putting down either SnoBro or tapper. They are
+  both pioneers and heroes to me, without who I could never have done the work
+  I did. I am not putting them down, rather, I am standing on the shoulders of
+  giants. The fact that I think my program is better (and maybe you won't think
+  so, but if it is) is a testament to their pioneering efforts.
+  
+--------------------------------------------------------------------------------
+| 2.0 Compilation and Installation
+--------------------------------------------------------------------------------
+
+  If you are not using a binary distribution (Binaries are provided for Windows,
+  Linux GTK+ 2.0, and Mac OS-X), then you will need to compile the source. Or
+  maybe you just want to. In either case, it should be fairly simple. First,
+  the prerequisites:
+  
+  An ISO compliant C++ compiler. I use g++ 3.4.2.
+  wxWidgets >= 2.6.1. I use wxWidgets 2.6.2. http://www.wxwidgets.org
+  
+  I use the GNU autoconf tools to handle Makefiles, so if you have these things,
+  you can probably do
+  
+  ./configure && make
+  
+  In Windows, you can use mingw and msys to obtain a unix development
+  environment. This is how I built the windows version.
+  
+--------------------------------------------------------------------------------
+| 3.0 Using The Program
+--------------------------------------------------------------------------------
+
+  To start the program, simply double click the mpg (or mpg.exe on Windows)
+  executable. You can also start it from a terminal if you like.
+  
+--------------------------------------------------------------------------------
+| 3.1 Encoding Basics
+--------------------------------------------------------------------------------
+
+  When you start the program, it will bring up a window full of check boxes and
+  text controls and other fun widgets.
+  
+  To change the password, simply click on the various checkboxes or change the
+  text controls in the notebook (the tabbed window).
+  
+  The first tab, labelled 'Items' contains controls for editing the basic
+  equipment in Metroid. Your items (maru mari, bombs, etc), energy tanks,
+  missile containers and count.
+  
+  The missile count is special because it is a spin control. This means you can
+  use the up/down buttons beside it or enter the number directly into the text
+  area. Because text controls are hard to validate this way, it is possible to
+  enter invalid input. Invalid input will never be used, but it can be entered.
+  I tried hard to prevent this, but in the end was unsuccessful. Just remember
+  that the missile count ranges from 0 to 255. If you have missiles but no
+  missile containers, the game will not show your missile display. Also, you can
+  only have as many missiles as you have missile containers (and 75 for each
+  boss Kraid and Ridley you have killed). This means if you have 255 missiles,
+  but have 1 missile container and no bosses killed, then the next time you
+  collect a missile, your inventory will drop to 5.
+  
+  The second tab, labelled 'Misc' contains all the other settings in Metroid.
+  This includes the game time, which doors are open (red and yellow doors, that
+  is), your start location, which boss statues have been raised, if samus is
+  wearing her space suit or not, which zebetites have been destroyed, and which
+  bosses are dead.
+  
+  For some reason, when you raise the Kraid statue, the game deactivates the
+  Kraid killed bit. I have found no downside to having them both enabled, and
+  I'm not entirely sure it's not a bug in the game. Just keep in mind that you
+  can have the statues raised or the bosses killed or both, and it all works the
+  same way (except of course for the Tourian Bridge).
+  
+  The game time is special for much the same reason the missile count was
+  special. Instead of being an 8-bit value here, though, it is a 32-bit value,
+  ranging from 0 to 42944967296 - 1. SnoBro thought the value was 24-bit, but he
+  is wrong. I believe he misread the Metroid source, just as I did when I first
+  glanced at it. After tracing the code though, I confirmed it is 32-bit.
+  
+  The game time is special for another reason. It is specified in what I will
+  call 'game ticks'. 1 game tick = ~4 seconds. SnoBro calculated it as closer
+  to ~4.266666666667 seconds (or more precisely 1 tick = 256 frames with the
+  NTSC (US) NES running 60 frames per second). Since I don't have a PAL version
+  of Metroid, I can't test if the time is different on a PAL (European) NES, but
+  I'm 99% positive it would be. In this case, a PAL NES runs at 50 frames per
+  second, which would mean 1 tick = 256 / 50 fps = 5.12 seconds. The ending time
+  probably won't be different, but if you wanted to calculate 1 hour in game
+  ticks, you would need this conversion for a PAL copy of Metroid.
+  
+  If you want a particular game time, you can just take the number of seconds
+  you want and divide by 4 (or 5 for PAL Metroid) for a good approximation. If
+  you want precision, take the number of seconds times 256 and divide that
+  number by 60 for the NTSC (US) Metroid, or 50 for the PAL (European) Metroid.
+  
+  The third panel, labelled 'Raw' will be covered in 3.3 Raw Encoding.
+  
+--------------------------------------------------------------------------------
+| 3.2 Decoding Basics
+--------------------------------------------------------------------------------
+
+  To decode a password, simply enter it in the text control at the bottom
+  under the Metroid password representation. You will need to separate the the
+  four segments with spaces, as is done in the default password. Once you have
+  entered the password, it is checked, and if authentic is automatically
+  decoded. You will know this happens because the metroid password display will
+  only change when a valid password is entered.
+  
+  If you want to try it out, just enter JUSTIN BAILEY ------ ------ and see
+  what happens. Then you can edit this password as described in 3.1 Encoding
+  Basics or 3.3 Raw Encoding.
+  
+  Keep in mind that some passwords have selections that are not actually valid
+  in the game itself. This means when you decode a password, it may not look
+  correct in the first tab. This is because the first two tabs try as much
+  as possible to ensure valid data. So you cannot have the Maru Mari if it has
+  not been taken from the pedestal. The JUSTIN BAILEY password, which has all
+  items (save the Ice Beam) in the inventory is one such password. It also has
+  a missile inventory greater than its carrying capacity.
+  
+  If you enter a password with an invalid checksum, the fix checksum button will
+  become enabled. This is useful when you want to make passwords from random
+  words. This will be discussed in 3.5 Checksum Fixing.
+  
+--------------------------------------------------------------------------------
+| 3.3 Raw Encoding
+--------------------------------------------------------------------------------
+
+  The third tab, labelled 'Raw' is for raw password data editing. Instead of
+  editing only the known values to produce a password, you can change it bit
+  by bit, just like in SnoBro's Metcode.
+  
+  I find this approach useful only when decoding user-made passwords that
+  aren't stricly valid in metroid (having items without removing them for
+  instance).
+  
+  You can also change the shift byte value here. It's purpose will be discussed
+  in the 3.4 The Shift Byte.
+  
+--------------------------------------------------------------------------------
+| 3.4 The Shift Byte
+--------------------------------------------------------------------------------
+
+  The shift byte is a value in the metroid password used to encode the data. I
+  guess they wanted to encrypt the passwords. But they didn't do a very good
+  job, because SnoBro figured it out, and through him, now I understand it, too.
+  
+  I won't talk about how it works here, because it's complex and ultimately
+  irrelevant to password generation. Just know here that changing the shift
+  byte value will alter the password significantly.
+  
+  The shift byte means there are trillions upon trillions of passwords that do
+  the same thing. Since there are 128 bits in the password and 256 shift values,
+  this gives the possibility of 8.7112285931760246646623899502533e+40 passwords.
+  
+  The JUSTIN BAILEY password uses a shift value of 255. By default, the program
+  uses a shift value of 0, which means the passwords aren't encoded at all. The
+  NAR PASSWORD has a defacto shift value of 0, even though it isn't used. This
+  means it is conceivable through raw editing that you could stumble upon the
+  NAR PASSWORD and ruin your editing. If this happens, simply change the shift
+  byte value to get an encoded password.
+  
+--------------------------------------------------------------------------------
+| 3.5 Checksum Fixing
+--------------------------------------------------------------------------------
+
+  Now we get to the fun part, checksum fixing. This enables you to create word
+  passwords that actually work in Metroid.
+  
+  I don't know if anyone will want this, but it's fun sometimes. I spent a good
+  twenty minutes playing with it, er, I mean testing my code.
+  
+  To make it work, simply enter a password. Because the checksum is encoded in
+  the last two characters, you cannot use these as part of your message, but the
+  rest are fair game. If it's not a valid password (which odds are it won't be),
+  the fix checksum button will become enabled and you can click it to fix the
+  checksum. At this point, the checksum will be changed and your password will
+  be entered.
+  
+  Note that because you are supplying random data, your password may not be
+  valid. The program will warn you if it knows your password is invalid. The two
+  possibilities for invalid password are the reset bit (look in the raw password
+  data) and an invalid start location.
+  
+  For instance, I wanted to use ThisIs MyRock inPass word00. But this has both
+  the reset bit set and an invalid start location. So I changed it to
+  ThisIs Myr0ck inPass word00. Then hit fix checksum and it becomes the valid
+  password ThisIs Myr0ck inPass word16.
+  
+  A note about spaces. It's best not to use spaces, because they can alter the
+  other letters. If you want spaces, blanks can be used instead. Blanks are
+  where there is no character between two other characters. Metroid treats
+  blanks as zeroes, but spaces are much different. You cannot put a blank in the
+  program, but you can put a 0, and change it to a blank when you enter it in
+  the game. Metroid cannot enter blanks, but you can go backwards until you hit
+  the character after the one you are at to get a blank.
+  
+  Finally, about the decoded meanings. If you have used metpass, you may have
+  noticed it seems to be able to generate different values for the generated
+  passwords. This is because it limits itself to the 16 possible shift values
+  that can be used with the first 22 password characters. The shift bit is
+  encoded in the 22 and 23 character of the password. The high four bits of the
+  23rd character are the bottom half of the shift value. Since there are four
+  bits, it gives 16 possible values.
+  
+  Why does this let it give different passwords? It doesn't by itself. The
+  reason it can generate 16 different sets of data is that instead of encoding
+  a new shift value onto an existing password which is what happens when you
+  change the shift byte in this program, it decodes the password you gave it
+  using each of the 16 possible shift values, and that becomes your data.
+  Because metpass changes the shift value and decodes a new password every time,
+  you get different data depending upon the shift value.
+  
+  To constrast, our program allows you to handle the shift value yourself. This
+  means you can use all 256 possible shift values, if you know the right letters
+  to use. To use the 16 possible shift values for any 22 character password,
+  make the 23rd character one of the following: 0, 4, 8, C, G, K, O, S, W, a, e,
+  i, m, q, u, or y.
+  
+  Now, getting back to my original password: ThisIs MyRock inPass word00. If I
+  change that first 0 to a G, I get a valid password without any editing. With
+  the fixed checksum, it becomes ThisIs MyRock inPass wordHT.
+  
+  The 22 character's low four bits are the high four bits of the shift byte.
+  There are too many possibilities to list here, so if you want to use more than
+  the 'simple 16', you'll have to figure it out yourself.
+  
+--------------------------------------------------------------------------------
+| 3.6 The Password Menu
+--------------------------------------------------------------------------------
+
+  Editing the bits by hand is a lot to take care of it you just want certain
+  things. The Password Menu has many useful options to make password editing
+  easier.
+  
+--------------------------------------------------------------------------------
+| 3.6.1 Perfect Game
+--------------------------------------------------------------------------------
+
+  The first item on the Password menu is the Perfect Game, or at least my idea
+  of one. You get all the items (except the wave beam because you can't use them
+  both without using user-created passwords), all the missile containers and a
+  full missile count, all the energy tanks (even though you can only use 6), all
+  the red and yellow doors open, kraid and ridley dead with their statues
+  raised, all the zebetites dead, starting in Tourian with a game time of 0 and
+  Samus in her swimsuit. This password is ------ ---mE3 l-y000 00y00j.
+  
+  Basically, it's what would happen if you went through the entire game twice
+  (once with spacesuit getting a good enough ending to play again without it,
+  and once with the swimsuit), but with a forged game time of 0 and a full
+  missile count (assuming you didn't have one when you got to Tourian). I guess
+  you would also have to die the second time around to account for the 30
+  energy and the fact that all the red and yellow doors in Tourian are open and
+  the zebetites are dead.
+  
+  In other words, this is the password to just go kill Mother Brain with a
+  minimum of complications (save for the fact you only start with 30 energy).
+  
+  If you want to be a little more fair, you might go revive the zebetites and
+  close the red and yellow doors in Tourian. Then it would be as if you just
+  arrived in Tourian, but died once to account for the 30 energy. This password
+  would be ------ --0m23 l-y000 00y00k.
+  
+  A better password if you want full energy would be to take away Brinstar
+  Energy Tank Three, close the red door to the Tourian Bridge in Brinstar, close
+  all red and yellow doors in Tourian, change the start location to Brinstar,
+  lower the statues, and finally revive the zebetites. This way, you can collect
+  the Energy Tank on the way to Tourian (it's the one in the ceiling just past
+  the shaft to Kraid's Lair). It will be as if you were just going to Tourian
+  for the first time. This password would be z?---- --0m20 l-y000 00K01p.
+  
+--------------------------------------------------------------------------------
+| 3.6.2 Debug Password
+--------------------------------------------------------------------------------
+
+  The second item on the Password menu is Debug Password. The debug password,
+  aka the NAR PASSWORD, is NARPAS SWORD0 0000. The last 8 characters can be
+  anything because the password is Hard Coded into the game, and the game only
+  checks the first 16 characters. I think this has something to do with the fact
+  that 16 password characters = 12 bytes which is 3 quads, a multiple of 4
+  bytes. I don't have any research to back it up, but it's a nice data size to
+  work with, and if it were simply a matter of bytes, they could have stopped at
+  12, which would be 9 bytes. Due to blanks and zeros being treated the same
+  way, you can also enter simply NARPAS SWORD and it will work.
+  
+  What does Hard Coded mean? It means the checksum isn't checked, nor the shift
+  byte used. It also means you cannot edit the password traits because it's not
+  a real password.
+  
+  There are several theories behind the name. NAR could mean 'Not a Password',
+  or it could mean 'North American Release' since the Japanese version used the
+  FDS (Famicom Disk System) to store its data, or it could be a shortened form
+  of the name Tohru Narihiro, the man who created the password system for
+  the US and European version of Metroid. Whatever it means, the password is
+  what it is.
+  
+  What does the debug password do? It turns on many interesting debugging
+  effects that can be used to test the game with. Samus is invincible (she
+  cannot be hurt or killed, except if the timer runs out when escaping from
+  Zebes after killing Mother Brain). Samus has all the equipment (The Wave Beam
+  and Ice Beam simultaneously, for a weird looking beam), and unlimited missile
+  capacity, even when the missile display is not present. She has no missile
+  containers or energy tanks, and neither Ridley nor Kraid is dead. Because the
+  password is hard coded, you cannot save the effects. Some people think you can
+  because when you start the game, you go back to your last position. But do not
+  confuse this with actually entering the password the game gives you. If you
+  reset the NES and try the new password, you will see that you have lost your
+  debug effects.
+  
+  The Debug Password menu item simply brings up a dialog with the NAR PASSWORD
+  and tells you it is Hard Coded and cannot be edited.
+  
+  It is possible to stumble upon the NAR PASSWORD by editing individual bits
+  when using a shift byte value of 0. If this happens, or you try to enter the
+  NAR PASSWORD into the text box, the program will warn you. If you stumble upon
+  it by accident, simply change your shift value in the raw tab and you will be
+  able to use the password.
+  
+--------------------------------------------------------------------------------
+| 3.6.3 Reset
+--------------------------------------------------------------------------------
+
+  This third item on the password menu is the reset option. You can use this to
+  reset the password to a blank one (all zero's), which would be the equivalent
+  of choosing Start instead of Continue from the Metroid intro.
+  
+  If you choose this option, it will ask you to confirm before it erases your
+  old data.
+
+--------------------------------------------------------------------------------
+| 3.6.4 The Ending Submenu
+--------------------------------------------------------------------------------
+
+  There are 10 possible endings in the game. The data I have seen says there
+  are five, but they are wrong. I don't know where this information came from
+  originally, but it doesn't square with my copy of Metroid.
+  
+  The ending you get is based on two factors. a) The time it took you to finish
+  the game, and b) Whether Samus is wearing a space suit or a swimsuit.
+  
+  I'll do b first because it's simpler. The only change with b is that if she's
+  wearing her swimsuit, you will see her in it when the ending screen starts
+  after taking the elevator off Zebes. Otherwise, she starts out in her space
+  suit.
+  
+  Now, there are 5 endings that depend on a. So, you get one of two things for
+  b, and 5 for a, giving us a total of 10 endings.
+  
+  There may be more than 10 endings. I have done research to find out the
+  exact times, but this is still based on what I have read in tutorials, that
+  endings are based on the two factors.
+  
+  So, there are five changes based on time.
+  
+  1) Samus changes into a bikini at the end (Space Suit Off)
+  2) Samus changes into a Swimsuit at the end (Space Suit Off)
+  3) Samus removes her helmet (Space Suit On)
+  4) Samus raises her fist in a 'victory pose' (Space Suit On)
+  5) Samus turns around covering her eyes in shame (Space Suit On)
+  
+  If the Space Suit is off, then for the last three endings, she puts it back
+  on.
+  
+  I have done tests to find out the precise numbers (in game ticks) that cause
+  the 5 time endings.
+  
+  1) Game Time < 1024 ticks (approx 1 hr 13 min)
+  2) Game Time < 2560 ticks (approx 3 hr 2 min)
+  3) Game Time < 5632 ticks (approx 6 hr 41 min)
+  4) Game Time < 31232 ticks (approx 37 hr 1 min)
+  5) Game Time >= 31232 ticks (approx 37 hr 1 min)
+  
+  Some people say 5 can be triggered at > 5 hr with Samus wearing her swimsuit.
+  I tried this, and it didn't give me that ending. I got ending 4. I think they
+  must not know what they are talking about and just guessed about 5 hours.
+  
+  I calculated the approximate times using the conversion 1 game tick equals
+  4.266667 seconds. Floating point numbers aren't highly accurate, so 6 decimal
+  places seemed more than sufficient. I doubt using a higher precision
+  conversion factor would yield different results only going to the minute, but
+  feel free to correct me if I'm wrong.
+  
+  Now, as for the Endings submenu. The purpose of this menu is to change the
+  game time to yield one of the ending results based on time. It will change
+  your time to 0, 1024, 2560, 5632, or 31232 depending upon the ending you
+  select. I decided not to put all ten including the swimsuit endings since most
+  people think there are only five endings anyway.
+  
+--------------------------------------------------------------------------------
+| 3.6.5 The Give Submenu
+--------------------------------------------------------------------------------
+
+  The final piece of the Password menu is another submenu. The Give submenu is
+  here to give you all of something in a certain category. The categories are
+  items, missile containers, energy tanks, red & yellow doors, statues,
+  zebetites, bosses, and missile count.
+  
+  Items: Gives All Items (All Equipment Except Wave Beam)
+  Missile Containers: All Missile Containers (105 possible missiles with these)
+  Energy Tanks: All 8 Energy Tanks
+  Red & Yellow Doors: All 19 Red & Yellow Doors Open
+  Statues: Kraid & Ridley's Statue Raised
+  Zebetites: All 5 Zebetites Dead
+  Bosses: All 3 Bosses (Kraid, Ridley & Mother Brain) Dead
+  
+  Full Missile Count is special in that instead of giving you 255, it gives you
+  whatever your carrying capacity is. If you have all missile containers and
+  both bosses are dead, then you can have 255. Kraid and Ridley are worth 75 a
+  piece. Each missile container is another 5, of which there are 21 containers.
+
+--------------------------------------------------------------------------------
+| 4.0 Known Bugs and Issues
+--------------------------------------------------------------------------------
+
+  There are no known bugs at this time. :-)
+  
+  There are a few issues to be aware of.
+  
+  In Mac, the text boxes seem to be scrolled past the end of the text. This can
+  make them look like they aren't responding to input or even that they have
+  any. Just click on the text control and press the left arrow till you reach
+  the beginning. The text is there. The two affected controls are the game time,
+  and the password text.
+  
+  In Linux using wxGTK, the display takes up significantly more space than it
+  does on Windows. It will fit on an 800x600 display if you hide any top and
+  bottom panels you may have. Otherwise, you'll need a higher resolution. I
+  tried to make it fit both Windows and Linux GTK under 800x600, but GTK just
+  takes up too much space.
+  
+  In Linux, the Spin Control text boxes are a bit annoying. If you delete all
+  the text, it goes back to being 0. If you put a value higher than 255, it will
+  put 255 in the box. Sorry, but I think there is a bug in wxGTK, and until I
+  can fix it properly, this is the only solution I could find.
+  
+--------------------------------------------------------------------------------
+| 5.0 Release History
+--------------------------------------------------------------------------------
+
+  Version 0.90 - Wednesday, September 28, 2005
+    - First Public Release
+  
+--------------------------------------------------------------------------------
+| 6.0 Contacting the Author
+--------------------------------------------------------------------------------
+
+  I can be contacted via email (webmaster [AT] technoplaza [DOT] net). Replace
+  that as appropriate. I also have an online feedback form at
+  http://www.technoplaza.net/feedback.php
+  
+--------------------------------------------------------------------------------
+| 7.0 Thank Yous and Acknowledgments
+--------------------------------------------------------------------------------
+
+  There are so many people who contributed to this program, and it would be
+  criminal not to list them.
+  
+  First, SnoBro (aka Kent Hansen). My shining light in the dark corridoors of
+  Zebes. SnoBro was the person who deciphered the metroid password checksum and
+  created the first password generator. Without his work, this program simply
+  would not exist.
+  
+  Second, tapper (aka Sebastian Pettersson). His checksum calculator inspired me
+  to add many things to this program that otherwise would not be there. He also
+  helped me confirm my thoughts on the NAR PASSWORD which was plaguing me for a
+  time.
+  
+  Third, Vadim Zeitlin, Robert Roebling, Stefan Csomer, Julian Smart, Ryan
+  Norton, and any member of the wxWidgets team I have overlooked. Their
+  wxWidgets library has saved me time and again from an impossible choice
+  between windows-only and Java (although I love Java, no one else seems to).
+  
+  Last but never least, and probably most important of all, my mentor Gregory
+  Rawlins who taught me all about design and design patterns. I am a million
+  times better programmer than I ever was before I met him. Without his
+  teaching, I would never have been able to tackle a program of even this scale.
+  I'm sure he would be horrified to know I've turned to the dark side (C++) and
+  abandoned the light (Java). Sorry Gregory. :-)
+  
+--------------------------------------------------------------------------------
+| 8.0 Legal Information
+--------------------------------------------------------------------------------
+
+  This program is Copyright (C) 2005 emuWorks http://games.technoplaza.net/.
+  It is licensed under the GNU General Public License, which is included with
+  this program in the docs section in the file license.txt.
+  
+  For more information, please consult the GNU website at http://www.gnu.org/,
+  or the Free Software Foundation http://www.fsf.org/.
+
