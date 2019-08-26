@@ -54,13 +54,16 @@ am__mpg_SOURCES_DIST = AppConstants.hh MPGApp.cc MPGApp.hh \
 	exceptions/InvalidPasswordException.cc \
 	exceptions/InvalidPasswordException.hh model/Password.cc \
 	model/Password.hh view/MPGFrame.cc view/MPGFrame.hh \
-	view/PasswordPanel.cc view/PasswordPanel.hh res/windows.rc
+	view/PasswordPanel.cc view/PasswordPanel.hh \
+	view/PasswordTextCtrl.cc view/PasswordTextCtrl.hh \
+	res/windows.rc
 am__dirstamp = $(am__leading_dot)dirstamp
 @WINDOWS_TRUE@am__objects_1 = res/windows.$(OBJEXT)
 am_mpg_OBJECTS = MPGApp.$(OBJEXT) \
 	exceptions/InvalidPasswordException.$(OBJEXT) \
 	model/Password.$(OBJEXT) view/MPGFrame.$(OBJEXT) \
-	view/PasswordPanel.$(OBJEXT) $(am__objects_1)
+	view/PasswordPanel.$(OBJEXT) view/PasswordTextCtrl.$(OBJEXT) \
+	$(am__objects_1)
 nodist_mpg_OBJECTS = res/mpg.$(OBJEXT)
 mpg_OBJECTS = $(am_mpg_OBJECTS) $(nodist_mpg_OBJECTS)
 mpg_LDADD = $(LDADD)
@@ -179,7 +182,9 @@ mpg_SOURCES = AppConstants.hh MPGApp.cc MPGApp.hh \
 	exceptions/InvalidPasswordException.cc \
 	exceptions/InvalidPasswordException.hh model/Password.cc \
 	model/Password.hh view/MPGFrame.cc view/MPGFrame.hh \
-	view/PasswordPanel.cc view/PasswordPanel.hh $(am__append_1)
+	view/PasswordPanel.cc view/PasswordPanel.hh \
+	view/PasswordTextCtrl.cc view/PasswordTextCtrl.hh \
+	$(am__append_1)
 nodist_mpg_SOURCES = res/mpg.cc
 all: all-am
 
@@ -264,6 +269,8 @@ view/MPGFrame.$(OBJEXT): view/$(am__dirstamp) \
 	view/$(DEPDIR)/$(am__dirstamp)
 view/PasswordPanel.$(OBJEXT): view/$(am__dirstamp) \
 	view/$(DEPDIR)/$(am__dirstamp)
+view/PasswordTextCtrl.$(OBJEXT): view/$(am__dirstamp) \
+	view/$(DEPDIR)/$(am__dirstamp)
 res/$(am__dirstamp):
 	@$(mkdir_p) res
 	@: > res/$(am__dirstamp)
@@ -285,6 +292,7 @@ mostlyclean-compile:
 	-rm -f res/windows.$(OBJEXT)
 	-rm -f view/MPGFrame.$(OBJEXT)
 	-rm -f view/PasswordPanel.$(OBJEXT)
+	-rm -f view/PasswordTextCtrl.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -295,6 +303,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@res/$(DEPDIR)/mpg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@view/$(DEPDIR)/MPGFrame.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@view/$(DEPDIR)/PasswordPanel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@view/$(DEPDIR)/PasswordTextCtrl.Po@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`; \

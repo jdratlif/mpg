@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.hh,v 1.28 2005/09/29 05:42:31 technoplaza Exp $
+// $Id: MPGFrame.hh,v 1.29 2005/09/29 22:23:07 technoplaza Exp $
 
 #ifndef _MPGFRAME_HH_
 #define _MPGFRAME_HH_
@@ -54,22 +54,17 @@ namespace mpg {
         void CreateControls();
         
         /**
-         * Gets the metroid password from the password text control removing the
-         * separating spaces.
-         *
-         * @return The password sans separating spaces.
-         */
-        wxString getUnifiedPassword() const;
-        
-        /**
          * Updates all the controls based on the current password data.
          */
         void updateControls();
         
         /**
          * Updates the text password when the password data has changed.
+         *
+         * @param updateCtrl true to update the text control value; false
+         *                   otherwise.
          */
-        void updatePasswordText();
+        void updatePasswordText(bool updateCtrl = true);
         
         /**
          * Updates the raw game time bits.
@@ -115,6 +110,13 @@ namespace mpg {
         void onBossChanged(wxCommandEvent &event);
         
         /**
+         * Called when a shift value from the checksum menu is selected.
+         *
+         * @param event The triggering wxCommandEvent.
+         */
+        void onChecksumShift(wxCommandEvent &event);
+        
+        /**
          * Called when a door checkbox is changed.
          *
          * @param event The triggering wxCommandEvent.
@@ -147,7 +149,7 @@ namespace mpg {
          *
          * @param event The triggering wxCommandEvent.
          */
-        void onGameChanged(wxCommandEvent &event);
+        void onGameSystem(wxCommandEvent &event);
         
         /**
          * Called when the game time is changed.

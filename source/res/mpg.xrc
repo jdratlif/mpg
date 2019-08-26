@@ -20,7 +20,7 @@
                     <help>Give Perfect Password</help>
                 </object>
                 <object class="wxMenuItem" name="IDM_PASSWORD_DEBUGPASSWORD">
-                    <label>&amp;Debug Password\tCtrl-D</label>
+                    <label>&amp;Debug Password</label>
                     <help>Give the Debug Mode Password</help>
                 </object>
                 <object class="separator">
@@ -34,23 +34,23 @@
                 <object class="wxMenu" name="IDM_PASSWORD_ENDINGS">
                     <label>&amp;Ending</label>
                     <object class="wxMenuItem" name="IDM_PASSWORD_ENDING1">
-                        <label>Best (Samus in Bikini)\tCtrl-1</label>
+                        <label>Best (Samus in Bikini)\tCtrl-F1</label>
                         <help>Best Ending: Samus in Bikini</help>
                     </object>
                     <object class="wxMenuItem" name="IDM_PASSWORD_ENDING2">
-                        <label>2nd Best (Samus in Swimsuit)\tCtrl-2</label>
+                        <label>2nd Best (Samus in Swimsuit)\tCtrl-F2</label>
                         <help>2nd Ending: Samus in Swimsuit</help>
                     </object>
                     <object class="wxMenuItem" name="IDM_PASSWORD_ENDING3">
-                        <label>3rd Best (Samus without Helmet)\tCtrl-3</label>
+                        <label>3rd Best (Samus without Helmet)\tCtrl-F3</label>
                         <help>3rd Ending: Samus Without Her Helmet</help>
                     </object>
                     <object class="wxMenuItem" name="IDM_PASSWORD_ENDING4">
-                        <label>4th Best (Samus Victory Pose)\tCtrl-4</label>
+                        <label>4th Best (Samus Victory Pose)\tCtrl-F4</label>
                         <help>4th Ending: Samus in Victory Pose</help>
                     </object>
                     <object class="wxMenuItem" name="IDM_PASSWORD_ENDING5">
-                        <label>Worst (Samus Shame Pose)\tCtrl-5</label>
+                        <label>Worst (Samus Shame Pose)\tCtrl-F5</label>
                         <help>Worst Ending: Samus in Shame Pose</help>
                     </object>
                 </object>
@@ -89,17 +89,86 @@
                         <help>Fill Samus's Missile Inventory</help>
                     </object>
                 </object>
+                <object class="separator">
+                </object>
+                <object class="wxMenu" name="IDM_PASSWORD_SHIFT">
+                    <label>Checksum Shift</label>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT1">
+                        <label>One\tCtrl-0</label>
+                        <help>Fix Checksum Using Shift 1</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT2">
+                        <label>Two\tCtrl-1</label>
+                        <help>Fix Checksum Using Shift 2</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT3">
+                        <label>Three\tCtrl-2</label>
+                        <help>Fix Checksum Using Shift 3</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT4">
+                        <label>Four\tCtrl-3</label>
+                        <help>Fix Checksum Using Shift 4</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT5">
+                        <label>Five\tCtrl-4</label>
+                        <help>Fix Checksum Using Shift 5</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT6">
+                        <label>Six\tCtrl-5</label>
+                        <help>Fix Checksum Using Shift 6</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT7">
+                        <label>Seven\tCtrl-6</label>
+                        <help>Fix Checksum Using Shift 7</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT8">
+                        <label>Eight\tCtrl-7</label>
+                        <help>Fix Checksum Using Shift 8</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT9">
+                        <label>Nine\tCtrl-8</label>
+                        <help>Fix Checksum Using Shift 9</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT10">
+                        <label>Ten\tCtrl-9</label>
+                        <help>Fix Checksum Using Shift 10</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT11">
+                        <label>Eleven\tCtrl-A</label>
+                        <help>Fix Checksum Using Shift 11</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT12">
+                        <label>Twelve\tCtrl-B</label>
+                        <help>Fix Checksum Using Shift 12</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT13">
+                        <label>Thirteen\tCtrl-C</label>
+                        <help>Fix Checksum Using Shift 13</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT14">
+                        <label>Fourteen\tCtrl-D</label>
+                        <help>Fix Checksum Using Shift 14</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT15">
+                        <label>Fifteen\tCtrl-E</label>
+                        <help>Fix Checksum Using Shift 15</help>
+                    </object>
+                    <object class="wxMenuItem" name="IDM_PASSWORD_SHIFT16">
+                        <label>Sixteen\tCtrl-F</label>
+                        <help>Fix Checksum Using Shift 16</help>
+                    </object>
+                </object>
             </object>
             <object class="wxMenu">
                 <label>&amp;Game</label>
                 <object class="wxMenuItem" name="IDM_GAME_NTSC">
-                    <label>&amp;NTSC (US Version)</label>
+                    <label>&amp;NTSC (US Version)\tCtrl-N</label>
                     <radio>1</radio>
                     <checked>1</checked>
                     <help>Use NTSC Timings to Convert Game Ticks to Real Time</help>
                 </object>
                 <object class="wxMenuItem" name="IDM_GAME_PAL">
-                    <label>&amp;PAL (European Version)</label>
+                    <label>&amp;PAL (European Version)\tCtrl-L</label>
                     <radio>1</radio>
                     <help>Use PAL Timings to Convert Game Ticks to Real Time</help>
                 </object>
@@ -1199,7 +1268,7 @@
                                         <flag>wxALIGN_CENTER_VERTICAL|wxRIGHT</flag>
                                         <border>5</border>
                                         <option>1</option>
-                                        <object class="wxTextCtrl" name="IDT_PASSWORD">
+                                        <object class="wxTextCtrl" name="IDT_PASSWORD" subclass="PasswordTextCtrl">
                                             <font>
                                                 <size>10</size>
                                                 <family>modern</family>
@@ -1207,7 +1276,6 @@
                                                 <weight>normal</weight>
                                                 <underlined>0</underlined>
                                             </font>
-                                            <value>000000 000000 000000 000000</value>
                                         </object>
                                     </object>
                                     <object class="sizeritem">

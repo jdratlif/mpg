@@ -11,7 +11,8 @@ mpg_SOURCES = AppConstants.hh \
 	exceptions/InvalidPasswordException.hh \
 	model/Password.cc model/Password.hh \
 	view/MPGFrame.cc view/MPGFrame.hh \
-	view/PasswordPanel.cc view/PasswordPanel.hh
+	view/PasswordPanel.cc view/PasswordPanel.hh \
+    view/PasswordTextCtrl.cc view/PasswordTextCtrl.hh
 
 nodist_mpg_SOURCES = res/mpg.cc
 

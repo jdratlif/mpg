@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-| Metroid Password Generator 0.91
+| Metroid Password Generator 0.92
 | Copyright (C) 2005 emuWorks http://games.technoplaza.net/
 | by John Ratliff [ webmaster AT technoplaza DOT net ]
 --------------------------------------------------------------------------------
@@ -22,7 +22,9 @@
       - 3.6.3 Reset
       - 3.6.4 The Ending Submenu
       - 3.6.5 The Give Submenu
+      - 3.6.6 The Checksum Submenu
     - 3.7 The Game Menu
+    - 3.8 The Custom Password Text Control
   - 4.0 Known Bugs and Issues
   - 5.0 Release History
   - 6.0 Contacting the Author
@@ -47,7 +49,7 @@
   Generator (metpass - Metroid Password Checksum Generator), respectively?
   
   First, neither of their programs work on anything but Windows, and I like
-  programs that work on Windows, Linux, and Mac OS-X, which my program does.
+  programs that work on Windows, Linux, and Mac OS X, which my program does.
   
   Second, neither of their programs has what I would consider a great GUI
   layout. SnoBro never released any refinements to his GUI, so you have to hunt
@@ -103,7 +105,7 @@
 --------------------------------------------------------------------------------
 
   If you are not using a binary distribution (Binaries are provided for Windows,
-  Linux GTK+ 2.0, and Mac OS-X), then you will need to compile the source. Or
+  Linux GTK+ 2.0, and Mac OS X), then you will need to compile the source. Or
   maybe you just want to. In either case, it should be fairly simple. First,
   the prerequisites:
   
@@ -476,7 +478,7 @@
 | 3.6.5 The Give Submenu
 --------------------------------------------------------------------------------
 
-  The final piece of the Password menu is another submenu. The Give submenu is
+  The next piece of the Password menu is another submenu. The Give submenu is
   here to give you all of something in a certain category. The categories are
   items, missile containers, energy tanks, red & yellow doors, statues,
   zebetites, bosses, and missile count.
@@ -495,6 +497,28 @@
   piece. Each missile container is another 5, of which there are 21 containers.
   
 --------------------------------------------------------------------------------
+| 3.6.6 The Checksum Submenu
+--------------------------------------------------------------------------------
+
+  If you have read the section 3.5 Checksum Fixing, you know that the last two
+  characters are generally all that you need to leave alone to get a working
+  password. You also know that the second to last (or 23rd if counting forward)
+  character can be adjusted to give 16 possible shift values. Rather than
+  memorizing these, you can use the checksum submenu to adjust the password for
+  you.
+  
+  Each item on the Checksum submenu will take a value from the list of 16,
+  change the 23rd character to it, and then decode the password with the new
+  shift value.
+  
+  Why is this handy? Because many passwords you form from strings of words will
+  be invalid. They could have the reset bit set, or an invalid start location.
+  This menu makes it easy to switch to a new shift value to see if you get a
+  valid password with the new shift value.
+  
+  If none of the 16 are valid though, you'll have to change the 22nd character.
+  
+--------------------------------------------------------------------------------
 | 3.7 The Game Menu
 --------------------------------------------------------------------------------
 
@@ -505,6 +529,25 @@
   The selection defaults to NTSC since it is what I use. If you have a PAL
   version of Metroid, you can change it using the menu to see what real times
   correspond to what game ticks.
+  
+--------------------------------------------------------------------------------
+| 3.8 The Custom Password Text Control
+--------------------------------------------------------------------------------
+
+  If you have used SnoBro's password generator MetCode, you have probably used
+  his password text control. It is very nice because it keeps spaces between
+  the segments of the password to make things more readable.
+  
+  Starting in version 0.92, mpg has this now, too. It's not the same as
+  SnoBro's, but it has equivalent functionality.
+  
+  When you enter password values now, the control will skip over the separating
+  spaces. It also works with the left and right arrows, delete and backspace,
+  and pasting.
+  
+  You can paste passwords (or parts of passwords) into the control by selecting
+  the position you want to paste at and pressing Ctrl-V on Windows and Linux,
+  and Command-V on Mac OS X.
 
 --------------------------------------------------------------------------------
 | 4.0 Known Bugs and Issues
@@ -514,11 +557,11 @@
   
   There are a few issues to be aware of.
   
-  In Mac, the text boxes seem to be scrolled past the end of the text. This can
-  make them look like they aren't responding to input or even that they have
-  any. Just click on the text control and press the left arrow till you reach
-  the beginning. The text is there. The two affected controls are the game time,
-  and the password text.
+  In Mac OS X, the text boxes seem to be scrolled past the end of the text. This
+  can make them look like they aren't responding to input or even that they have
+  any. Just click on the text control and press HOME or drag the mouse or use
+  the left arrow till you reach the beginning. The text is there. The two
+  affected controls are the game time, and the password text.
   
   In Linux using wxGTK, the display takes up significantly more space than it
   does on Windows. It will fit on an 800x600 display if you hide any top and
@@ -534,6 +577,11 @@
 --------------------------------------------------------------------------------
 | 5.0 Release History
 --------------------------------------------------------------------------------
+
+  Version 0.92 - Friday, September 30, 2005
+    - Added Custom Password Control
+    - Added Checksum Shift Submenu to Password Menu
+    - Changed Menu Accelerators to Accomodate new Checksum Shift Submenu
 
   Version 0.91 - Thursday, September 29, 2005
     - Fixed readme regarding invalid game tick conversions

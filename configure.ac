@@ -1,5 +1,5 @@
 dnl Initialize autoconf
-AC_INIT([mpg], [0.91], [webmaster@technoplaza.net])
+AC_INIT([mpg], [0.92], [webmaster@technoplaza.net])
 
 dnl require autoconf >= 2.59
 AC_PREREQ([2.59])

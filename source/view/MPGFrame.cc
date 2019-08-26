@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.cc,v 1.31 2005/09/29 05:42:31 technoplaza Exp $
+// $Id: MPGFrame.cc,v 1.35 2005/09/30 06:52:41 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -164,8 +164,25 @@ BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
         MPGFrame::onPasswordGiveZebetites)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_BOSSES"), MPGFrame::onPasswordGiveBosses)
     
-    EVT_MENU(XRCID("IDM_GAME_NTSC"), MPGFrame::onGameChanged)
-    EVT_MENU(XRCID("IDM_GAME_PAL"), MPGFrame::onGameChanged)
+    EVT_MENU(XRCID("IDM_GAME_NTSC"), MPGFrame::onGameSystem)
+    EVT_MENU(XRCID("IDM_GAME_PAL"), MPGFrame::onGameSystem)
+    
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT1"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT2"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT3"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT4"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT5"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT6"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT7"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT8"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT9"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT10"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT11"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT12"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT13"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT14"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT15"), MPGFrame::onChecksumShift)
+    EVT_MENU(XRCID("IDM_PASSWORD_SHIFT16"), MPGFrame::onChecksumShift)
     
     EVT_MENU(wxID_ABOUT, MPGFrame::onHelpAbout)
     
@@ -192,8 +209,11 @@ void MPGFrame::CreateControls() {
     wxXmlResource::Get()->LoadFrame(this, GetParent(), wxT("IDF_MPG"));
     SetIcon(wxIcon(icon32x32_xpm));
     
+    wxTextCtrl *ctrl = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl);
+    ctrl->SetMaxLength(27);
+    ctrl->SetValue(wxT("000000000000000000000000"));
+    
     XRCCTRL(*this, "IDP_PASSWORD", PasswordPanel)->setPassword(&password);
-    XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl)->SetMaxLength(27);
     
     wxTextCtrl *gameTime = XRCCTRL(*this, "IDT_MISC_GAMETIME", wxTextCtrl);
     gameTime->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
@@ -204,17 +224,6 @@ void MPGFrame::CreateControls() {
     updateTextCtrlSizes();
     
     ignoreTextEvent = false;
-}
-
-wxString MPGFrame::getUnifiedPassword() const {
-    wxString temp = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl)->GetValue();
-    
-    if (temp.Length() != 27) {
-        return wxEmptyString;
-    }
-    
-    return wxString(temp.Mid(0, 6) + temp.Mid(7, 6) +
-                     temp.Mid(14, 6) + temp.Mid(21));
 }
 
 void MPGFrame::updateControls() {
@@ -378,7 +387,7 @@ void MPGFrame::updateControls() {
 		    wxCheckBox)->SetValue(password.getBit(RIDLEY));
     XRCCTRL(*this, "IDC_MISC_BOSS_MOTHERBRAIN",
 		    wxCheckBox)->SetValue(password.getBit(MOTHERBRAIN));
-    
+            
     // update the armor control
     XRCCTRL(*this, "IDRB_MISC_ARMOR",
             wxRadioBox)->SetSelection(password.getBit(SWIMSUIT) ? 1 : 0);
@@ -415,22 +424,12 @@ void MPGFrame::updateControls() {
     }
 }
 
-void MPGFrame::updatePasswordText() {
-    wxTextCtrl *ctrl = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl);
-    wxString text;
-    
-    // separate the password segments with spaces
-    for (unsigned int i = 0; i < PASSWORD_LENGTH; ++i) {
-        if ((i > 0) && ((i % 6) == 0)) {
-            text += wxT(' ');
-        }
-        
-        text += password.getEncoded()[i];
+void MPGFrame::updatePasswordText(bool updateCtrl) {
+    if (updateCtrl) {
+        ignoreTextEvent = true;
+        XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl)->SetValue(password.getEncoded());
+        ignoreTextEvent = false;
     }
-    
-    ignoreTextEvent = true;
-    ctrl->SetValue(text);
-    ignoreTextEvent = false;
     
     XRCCTRL(*this, "IDP_PASSWORD", PasswordPanel)->Refresh(false);
     
@@ -476,9 +475,9 @@ void MPGFrame::updateRealTime() {
     int minutes = static_cast<int>(fmod(time / 60, 60));
     int seconds = static_cast<int>(fmod(time, 60));
     
-    XRCCTRL(*this, "IDST_MISC_GAMETIME",
-        wxStaticText)->SetLabel(wxString::Format("Approx %d Hr %d Min %d Sec",
-                                                 hours, minutes, seconds));
+    XRCCTRL(*this, "IDST_MISC_GAMETIME", wxStaticText)->SetLabel(
+        wxString::Format(wxT("Approx %d Hr %d Min %d Sec"),
+        hours, minutes, seconds));
 }
 
 void MPGFrame::updateStartLocation() {
@@ -520,16 +519,16 @@ void MPGFrame::updateTextCtrlSizes() {
     dc.SetFont(ctrl->GetFont());
     dc.GetTextExtent(wxT("04294967296"), &width, &height);
     
-    wxSize size(width + 15, height + 5);
+    wxSize size(width + 10, height + 5);
     ctrl->SetSize(size);
     ctrl->SetMinSize(size);
     ctrl->SetMaxSize(size);
     
     ctrl = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl);
     dc.SetFont(ctrl->GetFont());
-    dc.GetTextExtent(ctrl->GetValue(), &width, &height);
+    dc.GetTextExtent(wxT("000000 000000 000000 000000"), &width, &height);
     
-    size = wxSize(width + 15, height + 5);
+    size = wxSize(width + 10, height + 5);
     ctrl->SetSize(size);
     ctrl->SetMinSize(size);
     ctrl->SetMaxSize(size);
@@ -562,6 +561,54 @@ void MPGFrame::onBossChanged(wxCommandEvent &event) {
     password.setBit(bit, state);
     
     updatePasswordText();
+}
+
+void MPGFrame::onChecksumShift(wxCommandEvent &event) {
+    int id = event.GetId();
+    wxChar ch;
+    
+    if (id == XRCID("IDM_PASSWORD_SHIFT1")) {
+        ch = wxT('0');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT2")) {
+        ch = wxT('4');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT3")) {
+        ch = wxT('8');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT4")) {
+        ch = wxT('C');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT5")) {
+        ch = wxT('G');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT6")) {
+        ch = wxT('K');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT7")) {
+        ch = wxT('O');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT8")) {
+        ch = wxT('S');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT9")) {
+        ch = wxT('W');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT10")) {
+        ch = wxT('a');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT11")) {
+        ch = wxT('e');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT12")) {
+        ch = wxT('i');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT13")) {
+        ch = wxT('m');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT14")) {
+        ch = wxT('q');
+    } else if (id == XRCID("IDM_PASSWORD_SHIFT15")) {
+        ch = wxT('u');
+    } else {
+        ch = wxT('y');
+    }
+    
+    wxTextCtrl *ctrl = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl);
+    wxString text = ctrl->GetValue();
+    
+    text[22] = ch;
+    ctrl->SetValue(text);
+    
+    wxCommandEvent evt(wxEVT_COMMAND_BUTTON_CLICKED, XRCID("IDB_CHECKSUM"));
+    GetEventHandler()->AddPendingEvent(evt);
 }
 
 void MPGFrame::onDoorChanged(wxCommandEvent &event) {
@@ -645,12 +692,14 @@ void MPGFrame::onEnergyTankChanged(wxCommandEvent &event) {
 }
 
 void MPGFrame::onFixChecksum(wxCommandEvent &) {
-    password = Password(getUnifiedPassword(), true);
+    wxString text = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl)->GetValue();
+    
+    password = Password(text, true);
     updatePasswordText();
     updateControls();
 }
 
-void MPGFrame::onGameChanged(wxCommandEvent &event) {
+void MPGFrame::onGameSystem(wxCommandEvent &event) {
     pal = (event.GetId() == XRCID("IDM_GAME_PAL"));
     
     updateRealTime();
@@ -810,12 +859,12 @@ void MPGFrame::onPasswordChanged(wxCommandEvent &) {
         return;
     }
     
-    wxString value = getUnifiedPassword();
+    wxString text = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl)->GetValue();
                      
     try {
-        password = Password(value);
+        password = Password(text);
         
-        updatePasswordText();
+        updatePasswordText(false);
         updateControls();
     } catch (InvalidPasswordException &e) {
         if (e.getError() == INVALID_CHECKSUM) {
