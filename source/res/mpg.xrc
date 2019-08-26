@@ -208,10 +208,17 @@
                                             </object>
                                         </object>
                                         <object class="sizeritem">
-                                            <flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT</flag>
+                                            <flag>wxALIGN_CENTER_VERTICAL|wxLEFT</flag>
                                             <border>5</border>
-                                            <object class="wxSpinCtrl" name="IDSC_ITEMS_MISSILES">
-                                                <style>wxSP_ARROW_KEYS</style>
+                                            <object class="wxTextCtrl" name="IDT_ITEMS_MISSILES">
+                                                <value>0</value>
+                                            </object>
+                                        </object>
+                                        <object class="sizeritem">
+                                            <flag>wxALIGN_CENTER_VERTICAL|wxLEFT</flag>
+                                            <border>2</border>
+                                            <object class="wxSpinButton" name="IDSB_ITEMS_MISSILES">
+                                                <style>wxSP_VERTICAL</style>
                                                 <value>0</value>
                                                 <min>0</min>
                                                 <max>255</max>
@@ -1064,10 +1071,17 @@
                                             </object>
                                         </object>
                                         <object class="sizeritem">
-                                            <flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT</flag>
+                                            <flag>wxALIGN_CENTER_VERTICAL|wxLEFT</flag>
                                             <border>5</border>
-                                            <object class="wxSpinCtrl" name="IDSC_RAW_SHIFT">
-                                                <style>wxSP_ARROW_KEYS</style>
+                                            <object class="wxTextCtrl" name="IDT_RAW_SHIFT">
+                                                <value>0</value>
+                                            </object>
+                                        </object>
+                                        <object class="sizeritem">
+                                            <flag>wxALIGN_CENTER_VERTICAL|wxLEFT</flag>
+                                            <border>2</border>
+                                            <object class="wxSpinButton" name="IDSB_RAW_SHIFT">
+                                                <style>wxSP_VERTICAL</style>
                                                 <value>0</value>
                                                 <min>0</min>
                                                 <max>255</max>
@@ -1234,8 +1248,8 @@
                 </object>
             </object>
             <object class="sizeritem">
-                <flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
-                <border>0</border>
+                <flag>wxALIGN_CENTER_HORIZONTAL|wxBOTTOM</flag>
+                <border>2</border>
                 <object class="wxBoxSizer">
                     <orient>wxHORIZONTAL</orient>
                     <object class="sizeritem">
@@ -1270,7 +1284,7 @@
                                         <option>1</option>
                                         <object class="wxTextCtrl" name="IDT_PASSWORD" subclass="PasswordTextCtrl">
                                             <font>
-                                                <size>10</size>
+                                                <size>11</size>
                                                 <family>modern</family>
                                                 <style>normal</style>
                                                 <weight>normal</weight>

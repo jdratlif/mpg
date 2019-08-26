@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.hh,v 1.29 2005/09/29 22:23:07 technoplaza Exp $
+// $Id: MPGFrame.hh,v 1.32 2005/10/02 01:31:41 technoplaza Exp $
 
 #ifndef _MPGFRAME_HH_
 #define _MPGFRAME_HH_
@@ -94,6 +94,13 @@ namespace mpg {
          * Updates the sizes for the text controls so they are wide enough.
          */
         void updateTextCtrlSizes();
+        
+        /**
+         * Warns the user about the debug password.
+         *
+         * @param password The password string.
+         */
+        void warnOnDebugPassword(const wxString &password);
         
         /**
          * Called when Samus's armor is changed.
@@ -180,16 +187,23 @@ namespace mpg {
         void onMissileContainerChanged(wxCommandEvent &event);
         
         /**
+         * Called when the missile count spin button is pressed.
+         *
+         * @param event The triggering wxSpinEvent.
+         */
+        void onMissilesSpinner(wxSpinEvent &event);
+        
+        /**
          * Called when the missile count text is changed.
          *
-         * @param event The triggering wxCommandEvent (unused).
+         * @param event The triggering wxCommandEvent.
          */
         void onMissilesTextChanged(wxCommandEvent &event);
         
         /**
          * Called when the metroid password is changed.
          *
-         * @param event The triggering wxCommandEvent (unused).
+         * @param event The triggering wxCommandEvent.
          */
         void onPasswordChanged(wxCommandEvent &event);
         
@@ -286,9 +300,16 @@ namespace mpg {
         void onRawBitChanged(wxCommandEvent &event);
         
         /**
-         * Called when the shift text is changed.
+         * Called when the shift spin button is pressed.
          *
-         * @param event The triggering wxCommandEvent (unused).
+         * @param event The triggering wxSpinEvent.
+         */
+        void onShiftSpinner(wxSpinEvent &event);
+        
+        /**
+         * Called when the shift text value is changed.
+         *
+         * @param event The triggering wxCommandEvent.
          */
         void onShiftTextChanged(wxCommandEvent &event);
         

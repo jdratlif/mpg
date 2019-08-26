@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-// $Id: MPGFrame.cc,v 1.35 2005/09/30 06:52:41 technoplaza Exp $
+// $Id: MPGFrame.cc,v 1.42 2005/10/02 05:35:16 technoplaza Exp $
 
 #ifdef HAVE_CONFIG_H
     #include <config.h>
@@ -139,9 +139,9 @@ BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
     EVT_MENU(wxID_EXIT, MPGFrame::onFileExit)
     
     EVT_MENU(XRCID("IDM_PASSWORD_PERFECTGAME"),
-        MPGFrame::onPasswordPerfectGame)
+             MPGFrame::onPasswordPerfectGame)
     EVT_MENU(XRCID("IDM_PASSWORD_DEBUGPASSWORD"),
-        MPGFrame::onPasswordDebugPassword)
+             MPGFrame::onPasswordDebugPassword)
     EVT_MENU(XRCID("IDM_PASSWORD_RESET"), MPGFrame::onPasswordReset)
     
     EVT_MENU(XRCID("IDM_PASSWORD_ENDING1"), MPGFrame::onPasswordEnding)
@@ -151,17 +151,17 @@ BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
     EVT_MENU(XRCID("IDM_PASSWORD_ENDING5"), MPGFrame::onPasswordEnding)
     
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_MISSILES"),
-        MPGFrame::onPasswordGiveMissiles)
+             MPGFrame::onPasswordGiveMissiles)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ITEMS"), MPGFrame::onPasswordGiveItems)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_MC"),
-        MPGFrame::onPasswordGiveMissileContainers)
+             MPGFrame::onPasswordGiveMissileContainers)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ET"),
-        MPGFrame::onPasswordGiveEnergyTanks)
+             MPGFrame::onPasswordGiveEnergyTanks)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_DOORS"), MPGFrame::onPasswordGiveDoors)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_STATUES"),
-        MPGFrame::onPasswordGiveStatues)
+             MPGFrame::onPasswordGiveStatues)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_ZEBETITES"),
-        MPGFrame::onPasswordGiveZebetites)
+             MPGFrame::onPasswordGiveZebetites)
     EVT_MENU(XRCID("IDM_PASSWORD_GIVE_BOSSES"), MPGFrame::onPasswordGiveBosses)
     
     EVT_MENU(XRCID("IDM_GAME_NTSC"), MPGFrame::onGameSystem)
@@ -189,9 +189,12 @@ BEGIN_EVENT_TABLE(MPGFrame, wxFrame)
     EVT_RADIOBOX(XRCID("IDRB_MISC_START"), MPGFrame::onStartLocationChanged)
     EVT_RADIOBOX(XRCID("IDRB_MISC_ARMOR"), MPGFrame::onArmorChanged)
     
-    EVT_TEXT(XRCID("IDSC_ITEMS_MISSILES"), MPGFrame::onMissilesTextChanged)
+    EVT_SPIN(XRCID("IDSB_ITEMS_MISSILES"), MPGFrame::onMissilesSpinner)
+    EVT_SPIN(XRCID("IDSB_RAW_SHIFT"), MPGFrame::onShiftSpinner)
+    
+    EVT_TEXT(XRCID("IDT_ITEMS_MISSILES"), MPGFrame::onMissilesTextChanged)
     EVT_TEXT(XRCID("IDT_MISC_GAMETIME"), MPGFrame::onGameTimeChanged)
-    EVT_TEXT(XRCID("IDSC_RAW_SHIFT"), MPGFrame::onShiftTextChanged)
+    EVT_TEXT(XRCID("IDT_RAW_SHIFT"), MPGFrame::onShiftTextChanged)
     EVT_TEXT(XRCID("IDT_PASSWORD"), MPGFrame::onPasswordChanged)
 END_EVENT_TABLE()
 
@@ -209,15 +212,23 @@ void MPGFrame::CreateControls() {
     wxXmlResource::Get()->LoadFrame(this, GetParent(), wxT("IDF_MPG"));
     SetIcon(wxIcon(icon32x32_xpm));
     
-    wxTextCtrl *ctrl = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl);
+    wxTextCtrl *ctrl = XRCCTRL(*this, "IDT_ITEMS_MISSILES", wxTextCtrl);
+    ctrl->SetMaxLength(3);
+    ctrl->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
+    
+    ctrl = XRCCTRL(*this, "IDT_RAW_SHIFT", wxTextCtrl);
+    ctrl->SetMaxLength(3);
+    ctrl->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
+    
+    ctrl = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl);
     ctrl->SetMaxLength(27);
     ctrl->SetValue(wxT("000000000000000000000000"));
     
     XRCCTRL(*this, "IDP_PASSWORD", PasswordPanel)->setPassword(&password);
     
     wxTextCtrl *gameTime = XRCCTRL(*this, "IDT_MISC_GAMETIME", wxTextCtrl);
-    gameTime->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
     gameTime->SetMaxLength(10);
+    gameTime->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
     
     fixChecksumButton = XRCCTRL(*this, "IDB_CHECKSUM", wxButton);
     
@@ -396,12 +407,20 @@ void MPGFrame::updateControls() {
     unsigned long value = static_cast<unsigned long>(password.getGameTime());
     
     ignoreTextEvent = true;
-    XRCCTRL(*this, "IDSC_ITEMS_MISSILES",
-            wxSpinCtrl)->SetValue(password.getMissiles());
+    XRCCTRL(*this, "IDT_ITEMS_MISSILES",
+            wxTextCtrl)->SetValue(wxString::Format(wxT("%d"),
+                                                   password.getMissiles()));
+    XRCCTRL(*this, "IDSB_ITEMS_MISSILES",
+            wxSpinButton)->SetValue(password.getMissiles());
+                                                   
     XRCCTRL(*this, "IDT_MISC_GAMETIME",
             wxTextCtrl)->SetValue(wxString::Format(wxT("%lu"), value));
-    XRCCTRL(*this, "IDSC_RAW_SHIFT",
-            wxSpinCtrl)->SetValue(password.getShift());
+    
+    XRCCTRL(*this, "IDT_RAW_SHIFT",
+            wxTextCtrl)->SetValue(wxString::Format(wxT("%d"),
+                                                   password.getShift()));
+    XRCCTRL(*this, "IDSB_RAW_SHIFT",
+            wxSpinButton)->SetValue(password.getShift());
     ignoreTextEvent = false;
     
     // update the real time value
@@ -425,21 +444,16 @@ void MPGFrame::updateControls() {
 }
 
 void MPGFrame::updatePasswordText(bool updateCtrl) {
+    fixChecksumButton->Enable(false);
+    
     if (updateCtrl) {
         ignoreTextEvent = true;
-        XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl)->SetValue(password.getEncoded());
+        XRCCTRL(*this, "IDT_PASSWORD",
+                wxTextCtrl)->SetValue(password.getEncoded());
         ignoreTextEvent = false;
     }
     
     XRCCTRL(*this, "IDP_PASSWORD", PasswordPanel)->Refresh(false);
-    
-    // warn if they have entered the debug password
-    if (password.getEncoded().StartsWith(wxT("NARPASSWORD00000"))) {
-        wxMessageBox(wxT("This password triggers debug mode.\n"
-                         "Because it is Hard Coded, any change will disable "
-                         "debug mode effects."),
-                     wxT("Debug Password"), wxICON_EXCLAMATION | wxOK);
-    }
 }
 
 void MPGFrame::updateRawGameTime(wxUint32 value) {
@@ -476,8 +490,8 @@ void MPGFrame::updateRealTime() {
     int seconds = static_cast<int>(fmod(time, 60));
     
     XRCCTRL(*this, "IDST_MISC_GAMETIME", wxStaticText)->SetLabel(
-        wxString::Format(wxT("Approx %d Hr %d Min %d Sec"),
-        hours, minutes, seconds));
+            wxString::Format(wxT("Approx %d Hr %d Min %d Sec"),
+                             hours, minutes, seconds));
 }
 
 void MPGFrame::updateStartLocation() {
@@ -519,7 +533,7 @@ void MPGFrame::updateTextCtrlSizes() {
     dc.SetFont(ctrl->GetFont());
     dc.GetTextExtent(wxT("04294967296"), &width, &height);
     
-    wxSize size(width + 10, height + 5);
+    wxSize size(width + 10, -1);
     ctrl->SetSize(size);
     ctrl->SetMinSize(size);
     ctrl->SetMaxSize(size);
@@ -528,10 +542,19 @@ void MPGFrame::updateTextCtrlSizes() {
     dc.SetFont(ctrl->GetFont());
     dc.GetTextExtent(wxT("000000 000000 000000 000000"), &width, &height);
     
-    size = wxSize(width + 10, height + 5);
+    size = wxSize(width + 10, -1);
     ctrl->SetSize(size);
     ctrl->SetMinSize(size);
     ctrl->SetMaxSize(size);
+}
+
+void MPGFrame::warnOnDebugPassword(const wxString &password) {
+    // warn if they have entered the debug password
+    if (password.StartsWith(wxT("NARPASSWORD00000"))) {
+        wxMessageBox(wxT("This password triggers Metroid's debug mode.\n"
+                         "Because it is hard coded, it cannot be edited."),
+                     wxT("Debug Password"), wxICON_EXCLAMATION | wxOK);
+    }
 }
 
 void MPGFrame::onArmorChanged(wxCommandEvent &event) {
@@ -542,6 +565,7 @@ void MPGFrame::onArmorChanged(wxCommandEvent &event) {
     password.setBit(SWIMSUIT, state);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 void MPGFrame::onBossChanged(wxCommandEvent &event) {
@@ -561,6 +585,7 @@ void MPGFrame::onBossChanged(wxCommandEvent &event) {
     password.setBit(bit, state);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 void MPGFrame::onChecksumShift(wxCommandEvent &event) {
@@ -660,6 +685,7 @@ void MPGFrame::onDoorChanged(wxCommandEvent &event) {
     password.setBit(bit, state);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 void MPGFrame::onEnergyTankChanged(wxCommandEvent &event) {
@@ -689,6 +715,7 @@ void MPGFrame::onEnergyTankChanged(wxCommandEvent &event) {
     password.setBit(bit, state);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 void MPGFrame::onFixChecksum(wxCommandEvent &) {
@@ -710,16 +737,19 @@ void MPGFrame::onGameTimeChanged(wxCommandEvent &event) {
         return;
     }
     
+    wxString text = event.GetString();
+    wxUint32 ticks;
     unsigned long value;
     
-    if (event.GetString().ToULong(&value)) {
-        wxUint32 ticks = static_cast<wxUint32>(value);
+    if (text.ToULong(&value)) {
+        ticks = static_cast<wxUint32>(value);
         
         updateRawGameTime(ticks);
         password.setGameTime(ticks);
         
         updateRealTime();
         updatePasswordText();
+        warnOnDebugPassword(password.getEncoded());
     }
 }
 
@@ -779,6 +809,7 @@ void MPGFrame::onItemChanged(wxCommandEvent &event) {
     }
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 void MPGFrame::onMissileContainerChanged(wxCommandEvent &event) {
@@ -834,32 +865,61 @@ void MPGFrame::onMissileContainerChanged(wxCommandEvent &event) {
     password.setBit(bit, state);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
-void MPGFrame::onMissilesTextChanged(wxCommandEvent &) {
-    if (ignoreTextEvent) {
-        return;
-    }
+void MPGFrame::onMissilesSpinner(wxSpinEvent &event) {
+    ignoreTextEvent = true;
+    XRCCTRL(*this, "IDT_ITEMS_MISSILES",
+            wxTextCtrl)->SetValue(wxString::Format(wxT("%d"),
+                                                   event.GetPosition()));
+    ignoreTextEvent = false;
     
-    wxSpinCtrl *ctrl = XRCCTRL(*this, "IDSC_ITEMS_MISSILES", wxSpinCtrl);
-    unsigned char value = static_cast<unsigned char>(ctrl->GetValue());
+    unsigned char missiles = static_cast<unsigned char>(event.GetPosition());
+    password.setMissiles(missiles);
     
-    password.setMissiles(value);
-    
-    updateRawMissiles(value);
+    updateRawMissiles(missiles);
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
-void MPGFrame::onPasswordChanged(wxCommandEvent &) {
-    if (fixChecksumButton) {
-        fixChecksumButton->Enable(false);
-    }
-    
+void MPGFrame::onMissilesTextChanged(wxCommandEvent &event) {
     if (ignoreTextEvent) {
         return;
     }
     
-    wxString text = XRCCTRL(*this, "IDT_PASSWORD", wxTextCtrl)->GetValue();
+    wxString text = event.GetString();
+    unsigned char missiles;
+    unsigned long value;
+    
+    if (text.ToULong(&value)) {
+        if (value > 255) {
+            missiles = 255;
+        } else {
+            missiles = static_cast<unsigned char>(value);
+        }
+        
+        password.setMissiles(missiles);
+        
+        updateRawMissiles(missiles);
+        updatePasswordText();
+        warnOnDebugPassword(password.getEncoded());
+        
+        ignoreTextEvent = true;
+        XRCCTRL(*this, "IDSB_ITEMS_MISSILES", wxSpinButton)->SetValue(missiles);
+        ignoreTextEvent = false;
+    }
+}
+
+void MPGFrame::onPasswordChanged(wxCommandEvent &event) {
+    if (ignoreTextEvent) {
+        return;
+    }
+    
+    wxTextCtrl *ctrl = dynamic_cast<wxTextCtrl *>(event.GetEventObject());
+    wxString text = ctrl->GetValue();
+    
+    warnOnDebugPassword(text);
                      
     try {
         password = Password(text);
@@ -875,7 +935,7 @@ void MPGFrame::onPasswordChanged(wxCommandEvent &) {
 
 void MPGFrame::onPasswordDebugPassword(wxCommandEvent &) {  
     wxMessageBox(wxT("The debug password is NARPAS SWORD0 000000 000000\n"
-                     "It is Hard Coded and cannot be edited."),
+                     "It is hard coded and cannot be edited."),
                  wxT("Debug Password"), wxICON_INFORMATION | wxOK);
 }
 
@@ -1002,16 +1062,8 @@ void MPGFrame::onPasswordGiveMissiles(wxCommandEvent &) {
     if (password.getBit(KRAID) || password.getBit(KRAID_STATUE)) count += 15;
     if (password.getBit(RIDLEY) || password.getBit(RIDLEY_STATUE)) count += 15;
     
-    XRCCTRL(*this, "IDSC_ITEMS_MISSILES", wxSpinCtrl)->SetValue(count *= 5);
-    
-    #ifndef __WXMSW__
-        // SetValue of a wxSpinCtrl on Windows also generates a EVT_TEXT event,
-        // but on wxGTK it doesn't, so we need to update manually
-        password.setMissiles(count);
-        
-        updateRawMissiles(count);
-        updatePasswordText();
-    #endif
+    XRCCTRL(*this, "IDT_ITEMS_MISSILES",
+            wxTextCtrl)->SetValue(wxString::Format(wxT("%d"), count *= 5));
 }
 
 void MPGFrame::onPasswordGiveMissileContainers(wxCommandEvent &) {
@@ -1443,8 +1495,9 @@ void MPGFrame::onRawBitChanged(wxCommandEvent &event) {
         case MISSILES + 6:
         case MISSILES + 7:
             ignoreTextEvent = true;
-            XRCCTRL(*this, "IDSC_ITEMS_MISSILES",
-                    wxSpinCtrl)->SetValue(password.getMissiles());
+            XRCCTRL(*this, "IDT_ITEMS_MISSILES",
+                    wxTextCtrl)->SetValue(
+                        wxString::Format(wxT("%d"), password.getMissiles()));
             ignoreTextEvent = false;
             
             break;
@@ -1521,19 +1574,48 @@ void MPGFrame::onRawBitChanged(wxCommandEvent &event) {
     }
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
-void MPGFrame::onShiftTextChanged(wxCommandEvent &) {
+void MPGFrame::onShiftSpinner(wxSpinEvent &event) {
+    ignoreTextEvent = true;
+    XRCCTRL(*this, "IDT_RAW_SHIFT",
+            wxTextCtrl)->SetValue(wxString::Format(wxT("%d"),
+                                                   event.GetPosition()));
+    ignoreTextEvent = false;
+    
+    unsigned char shift = static_cast<unsigned char>(event.GetPosition());
+    password.setShift(shift);
+    
+    updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
+}
+
+void MPGFrame::onShiftTextChanged(wxCommandEvent &event) {
     if (ignoreTextEvent) {
         return;
     }
     
-    wxSpinCtrl *ctrl = XRCCTRL(*this, "IDSC_RAW_SHIFT", wxSpinCtrl);
-    unsigned char value = static_cast<unsigned char>(ctrl->GetValue());
+    wxString text = event.GetString();
+    unsigned char shift;
+    unsigned long value;
     
-    password.setShift(value);
-    
-    updatePasswordText();
+    if (text.ToULong(&value)) {
+        if (value > 255) {
+            shift = 255;
+        } else {
+            shift = static_cast<unsigned char>(value);
+        }
+        
+        password.setShift(shift);
+        
+        updatePasswordText();
+        warnOnDebugPassword(password.getEncoded());
+        
+        ignoreTextEvent = true;
+        XRCCTRL(*this, "IDSB_RAW_SHIFT", wxSpinButton)->SetValue(shift);
+        ignoreTextEvent = false;
+    }
 }
 
 void MPGFrame::onStartLocationChanged(wxCommandEvent &event) {
@@ -1588,6 +1670,7 @@ void MPGFrame::onStartLocationChanged(wxCommandEvent &event) {
     password.setBit(START_RL, rl);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 void MPGFrame::onStatueChanged(wxCommandEvent &event) {
@@ -1605,6 +1688,7 @@ void MPGFrame::onStatueChanged(wxCommandEvent &event) {
     password.setBit(bit, state);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 void MPGFrame::onZebetiteChanged(wxCommandEvent &event) {
@@ -1628,6 +1712,7 @@ void MPGFrame::onZebetiteChanged(wxCommandEvent &event) {
     password.setBit(bit, state);
     
     updatePasswordText();
+    warnOnDebugPassword(password.getEncoded());
 }
 
 IMPLEMENT_CLASS(MPGFrame, wxFrame)
