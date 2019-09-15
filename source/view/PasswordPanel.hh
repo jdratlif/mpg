@@ -40,8 +40,8 @@ namespace mpg {
         static const int START_X = 4;
         static const int START_Y = 4;
         static const int CHARS_PER_ROW = 13;
-        static const int CHAR_WIDTH = 16;
-        static const int CHAR_HEIGHT = 16;
+        static const int PCHAR_WIDTH = 16;
+        static const int PCHAR_HEIGHT = 16;
         
         /**
          * Gets the upper-left corner position of a letter in the alphabet

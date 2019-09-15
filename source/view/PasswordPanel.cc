@@ -45,8 +45,8 @@ PasswordPanel::PasswordPanel() : alphabet(alphabet_xpm), password(0) {}
 wxPoint PasswordPanel::getLetterPos(wxChar letter) const {
     int index = Password::ALPHABET.Find(letter);
     
-    return wxPoint(((index % CHARS_PER_ROW) * CHAR_WIDTH * 2),
-                   ((index / CHARS_PER_ROW) * CHAR_HEIGHT * 2));
+    return wxPoint(((index % CHARS_PER_ROW) * PCHAR_WIDTH * 2),
+                   ((index / CHARS_PER_ROW) * PCHAR_HEIGHT * 2));
 }
 
 void PasswordPanel::onPaint(wxPaintEvent &) {
@@ -69,19 +69,19 @@ void PasswordPanel::onPaint(wxPaintEvent &) {
             for (int col = 0; col < 12; ++col) {
                 // separated in the middle with a space
                 if (col == 6) {
-                    pos.x += CHAR_WIDTH;
+                    pos.x += PCHAR_WIDTH;
                 }
                 
                 // (row * 12) + col = [0, 23]
                 wxPoint letter = getLetterPos(encoded[(row * 12) + col]);
-                dc.Blit(pos.x, pos.y, CHAR_WIDTH, CHAR_HEIGHT,
+                dc.Blit(pos.x, pos.y, PCHAR_WIDTH, PCHAR_HEIGHT,
                         &xpm, letter.x, letter.y);
                 
-                pos.x += CHAR_WIDTH;
+                pos.x += PCHAR_WIDTH;
             }
             
             pos.x = START_X;
-            pos.y = START_Y + (2 * CHAR_HEIGHT);
+            pos.y = START_Y + (2 * PCHAR_HEIGHT);
         }
     }
 }
