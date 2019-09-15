@@ -1,5 +1,5 @@
 /* XPM */
-static char * alphabet_xpm[] = {
+static const char * alphabet_xpm[] = {
 "400 144 809 2",
 "  	c #000000",
 ". 	c #091908",
