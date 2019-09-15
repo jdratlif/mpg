@@ -1,5 +1,3 @@
-# $Id: Makefile.am,v 1.9 2008/12/17 00:13:31 jdratlif Exp $
-
 AUTOMAKE_OPTIONS = subdir-objects
 CLEANFILES = res/mpg.cc
 EXTRA_DIST = res/alphabet.xpm res/icon32x32.ico res/icon32x32.xpm \
@@ -36,4 +34,3 @@ mpg.app: mpg res/mpg.icns res/Info.plist
 	cp res/Info.plist mpg.app/Contents
 	cp res/mpg.icns mpg.app/Contents/Resources
 	echo -n 'APPL????' > mpg.app/Contents/PkgInfo
-
